@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="debug" name="Log4j_v2_Profiler">
+  <appenders>
+    <File name="FILE" fileName="log4jv2-file.out" append="true">
+      <PatternLayout>
+        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </File>
+    <FastFile name="FASTFILE" fileName="log4jv2-fastfile.out" immediateFlush="false" append="true">
+      <PatternLayout>
+        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </FastFile>
+  </appenders>
+  <loggers>
+    <logger name="SyncFileLogger" level="debug">
+      <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="SyncFastFileLogger" level="debug">
+      <appender-ref ref="FASTFILE"/>
+    </logger>
+    <root level="debug">
+    </root>
+  </loggers>
+</configuration>
