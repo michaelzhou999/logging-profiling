@@ -6,8 +6,10 @@ Purpose
 
 The purpose of creating this project was to test and compare performance
 characteristics (mainly speed) of frequently used Java logging frameworks,
-which for the time being include, **Log4j version 1**, **Log4j version 2**,
-and **Logback**.
+which for the time being include,
+- **Log4j version 1**
+- **Log4j version 2**
+- **Logback**.
 
 Permutations
 ------------
@@ -37,7 +39,8 @@ way of formatting logging messages.
 Project Management
 ------------------
 
-The project is entirely managed by Maven, structured as follows:
+The project is entirely managed by Maven, structured as follows which should
+be self-explanatary:
 - Project "common" contains common classes other projects depend on
 - Project "log4jv1-native" tests LOG4J version 1 via native API
 - Project "log4jv1-slf4j" tests LOG4J version 1 via SLF4J API
@@ -50,6 +53,7 @@ Build
 -----
 
 Once cloned, at parent directory level, run
+
     mvn clean install
 
 
