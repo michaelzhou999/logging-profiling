@@ -57,12 +57,15 @@ Run
 ---
 
 To run each individual test, e.g., log4jv2-native,
+
     cd log4jv2-native
     mvn exec:java
 
 To change the number of threads and repeats,
+
     mvn exec:java -Dexec.args="-t <number_of_threads> -r <number_of_repeats>"
 
 To get help,
+
     mvn exec:java -Dexec.args="-h"
 
