@@ -13,11 +13,11 @@ Permutations
 ------------
 
 The permutations of testing revolve around these dimensions:
-    - number of concurrent threads
-    - number of repeating logs within a thread
-    - different ways of formatting log messages
-    - choice of logging frameworks
-    - access methods, e.g., SLF4J facade vs native API
+- number of concurrent threads
+- number of repeating logs within a thread
+- different ways of formatting log messages
+- choice of logging frameworks
+- access methods, e.g., SLF4J facade vs native API
 
 Limitations
 -----------
@@ -38,13 +38,13 @@ Project Management
 ------------------
 
 The project is entirely managed by Maven, structured as follows:
-    - Project "common" contains common classes other projects depend on
-    - Project "log4jv1-native" tests LOG4J version 1 via native API
-    - Project "log4jv1-slf4j" tests LOG4J version 1 via SLF4J API
-    - Project "log4jv2-native" tests LOG4J version 2 via native API
-    - Project "log4jv2-native" tests LOG4J version 2 via native API
-    - Project "log4jv2-slf4j" tests LOG4J version 2 via SLF4J API
-    - Project "logback" tests Logback via SLF4J API
+- Project "common" contains common classes other projects depend on
+- Project "log4jv1-native" tests LOG4J version 1 via native API
+- Project "log4jv1-slf4j" tests LOG4J version 1 via SLF4J API
+- Project "log4jv2-native" tests LOG4J version 2 via native API
+- Project "log4jv2-native" tests LOG4J version 2 via native API
+- Project "log4jv2-slf4j" tests LOG4J version 2 via SLF4J API
+- Project "logback" tests Logback via SLF4J API
 
 Build
 -----
