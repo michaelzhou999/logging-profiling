@@ -25,7 +25,7 @@ public class Profiler
 
     public static void main(String[] args) throws InterruptedException
     {
-        if (!opts.parseCliOptions(args)) {
+        if (!opts.parseCliOptions("log4j v1 (via slf4j) profiler", args)) {
             return;
         }
         

@@ -21,13 +21,6 @@ The permutations of testing revolve around these dimensions:
 - choice of logging frameworks
 - access methods, e.g., SLF4J facade vs native API
 
-Limitations
------------
-
-The project is never intended to be a full-blown testing suite for the
-afore-mentioned logging frameworks. Nor is it intended for arousing debates
-on which logging framework is the best.
-
 Goals
 -----
 
@@ -36,8 +29,15 @@ logging framework suited for their Java projects based on their unique hardware
 and software architectures, as well as practice using the most efficient
 way of formatting logging messages.
 
-Project Management
-------------------
+Limitations
+-----------
+
+The project is never intended to be a full-blown testing suite for the
+afore-mentioned logging frameworks. Nor is it intended for arousing debates
+on which logging framework is the best.
+
+Project Structure
+-----------------
 
 The project is entirely managed by Maven, structured as follows which should
 be self-explanatary:
@@ -49,10 +49,25 @@ be self-explanatary:
 - Project "log4jv2-slf4j" tests LOG4J version 2 via SLF4J API
 - Project "logback" tests Logback via SLF4J API
 
+Dependencies
+------------
+
+The projects require JDK v1.6+ and Maven 2.0.6+.
+
+In addition, they are dependent upon these Maven plugins for build:
+- Exec (http://mojo.codehaus.org/exec-maven-plugin/)
+- Enforcer (http://maven.apache.org/enforcer/maven-enforcer-plugin/)
+
+At compile and runtime, they depend on:
+- Apache Commons CLI (http://commons.apache.org/proper/commons-cli/)
+
+See each individual project's pom.xml file for its corresponding logging
+framework's version.
+
 Build
 -----
 
-Once cloned, at parent directory level, run
+At parent directory level, run
 
     mvn clean install
 
@@ -60,7 +75,7 @@ Once cloned, at parent directory level, run
 Run
 ---
 
-To run each individual test, e.g., log4jv2-native,
+To run profiling test against each individual logging framework, e.g., log4jv2-native,
 
     cd log4jv2-native
     mvn exec:java
@@ -69,7 +84,15 @@ To change the number of threads and repeats,
 
     mvn exec:java -Dexec.args="-t <number_of_threads> -r <number_of_repeats>"
 
+or in the long format
+
+    mvn exec:java -Dexec.args="--thread <number_of_threads> --repeat <number_of_repeats>"
+
 To get help,
 
     mvn exec:java -Dexec.args="-h"
+
+or in the long format
+
+    mvn exec:java -Dexec.args="--help"
 

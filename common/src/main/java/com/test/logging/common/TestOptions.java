@@ -61,7 +61,7 @@ public class TestOptions {
      * @return true if execution should continue; false if command line options indicate printing
      *         the help message.
      */
-    public boolean parseCliOptions(String[] args) {
+    public boolean parseCliOptions(String appName, String[] args) {
         CommandLineParser parser = new PosixParser();
         CommandLine line = null;
         try {
@@ -77,7 +77,7 @@ public class TestOptions {
             // If --help is specified on CLI, all other options will be ignored, usage will be printed
             // and program exits.
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("log4j profiler", options);
+            formatter.printHelp(appName, options);
             return false;
         }
 
