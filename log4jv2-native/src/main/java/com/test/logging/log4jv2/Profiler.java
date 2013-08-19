@@ -1,31 +1,26 @@
 package com.test.logging.log4jv2;
 
+import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
 import com.test.logging.common.TestOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Profiling LOG4J version 1 via Native API
+ * Profiling LOG4J version 2 via Native API
  *
  * @author Michael.Zhou
  */
-public class Profiler 
+public class Profiler extends BaseProfiler
 {
-    /** Options for running the profiler */
-    private static final TestOptions opts = new TestOptions();
-
-    private static void printBanner() {
-        System.out.println("");
-        System.out.println("################################################################");
-        System.out.println("   Starting LOG4J version 2 via Native API profiling test ...");
-        System.out.println("################################################################");
-        System.out.println("");
+    static {
+        setAppName("log4j v2 (native) profiler");
     }
 
     public static void main(String[] args) throws InterruptedException
     {
-        if (!opts.parseCliOptions("log4j v2 (native) profiler", args)) {
+        TestOptions opts = getTestOptions();
+        if (!opts.parseCliOptions(getAppName(), args)) {
             return;
         }
         

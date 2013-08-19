@@ -1,31 +1,26 @@
 package com.test.logging.logback;
 
+import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.TestOptions;
 import com.test.logging.common.LoggingTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Profiling LOG4J version 2 via SLF4J API
+ * Profiling LOGBACK via SLF4J API
  *
  * @author Michael.Zhou
  */
-public class Profiler 
+public class Profiler extends BaseProfiler
 {
-    /** Options for running the profiler */
-    private static final TestOptions opts = new TestOptions();
-
-    private static void printBanner() {
-        System.out.println("");
-        System.out.println("###################################################");
-        System.out.println("   Starting LOGBACK via SLF4J profiling test ...");
-        System.out.println("###################################################");
-        System.out.println("");
+    static {
+        setAppName("logback profiler");
     }
 
     public static void main(String[] args) throws InterruptedException
     {
-        if (!opts.parseCliOptions("logback profiler", args)) {
+        TestOptions opts = getTestOptions();
+        if (!opts.parseCliOptions(getAppName(), args)) {
             return;
         }
         
