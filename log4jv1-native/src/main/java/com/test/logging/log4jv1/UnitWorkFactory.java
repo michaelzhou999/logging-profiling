@@ -13,10 +13,10 @@ import org.apache.log4j.Logger;
 public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
     
     public static enum Type {
-        LITERAL("INFO level string literal"),
-        INFO_CHECKED_STRING("INFO level checked string literal"),
-        DEBUG_CHECKED_STRING("DEBUG level checked string literal"),
         TRACE_CHECKED_STRING("TRACE level checked string literal"),
+        DEBUG_CHECKED_STRING("DEBUG level checked string literal"),
+        INFO_CHECKED_STRING("INFO level checked string literal"),
+        LITERAL("INFO level string literal"),
         CONCAT_STRING("INFO level checked + concatenated string"),
         JAVA_FORMATTED_STRING("INFO level checked Java built-in formatted string");
 
