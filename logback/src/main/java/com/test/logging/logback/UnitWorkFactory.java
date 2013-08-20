@@ -6,20 +6,19 @@ import org.slf4j.Logger;
 
 
 /**
- * Factory to create units of logging test work to use with SLF4J APIs.
+ * Factory to create units of logging test work to use with Logback APIs.
  * 
  * @author Michael.Zhou
  */
 public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
     
     public static enum Type {
-        TRACE_CHECKED_STRING("TRACE Level checked string literal (ms)"),
-        DEBUG_CHECKED_STRING("DEBUG Level checked string literal (ms)"),
-        INFO_CHECKED_STRING("INFO Level checked string literal (ms)"),
-        LITERAL("INFO Level string literal (ms)"),
-        CONCAT_STRING("INFO Level checked + concatenated string (ms)"),
-        SLF4J_FORMATTED_STRING("INFO Level checked SLF4J formatted string (ms)"),
-        JAVA_FORMATTED_STRING("INFO Level checked Java built-in formatted string (ms)");
+        //TRACE_CHECKED_STRING("TRACE Level checked string literal (ms)"),
+        LITERAL("String literal (ms)"),
+        LEVEL_CHECKED_LITERAL("Level checked string literal (ms)"),
+        CONCAT_STRING("Level checked string concatenated via + (ms)"),
+        SLF4J_FORMATTED_STRING("Level checked string via SLF4J formatting (ms)"),
+        JAVA_FORMATTED_STRING("Level checked string via Java built-in formatting (ms)");
 
         /** String representation of the factory type */
         private final String name;
@@ -49,14 +48,12 @@ public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
     @Override
     public TestUnitWork<Logger> createUnitWork() {
         switch (this.type) {
+            //case TRACE_CHECKED_STRING:
+            //    return new TraceCheckedLogging(logger);
             case LITERAL:
                 return new LiteralLogging(logger);
-            case INFO_CHECKED_STRING:
-                return new InfoCheckedLogging(logger);
-            case DEBUG_CHECKED_STRING:
-                return new DebugCheckedLogging(logger);
-            case TRACE_CHECKED_STRING:
-                return new TraceCheckedLogging(logger);
+            case LEVEL_CHECKED_LITERAL:
+                return new LevelCheckedLogging(logger);
             case CONCAT_STRING:
                 return new ConcatStringLogging(logger);
             case SLF4J_FORMATTED_STRING:
@@ -68,63 +65,6 @@ public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
         }
     }
     
-}
-/**
- * INFO logs a string literal.
- * 
- * @author Michael.Zhou
- */
-class LiteralLogging extends TestUnitWork<Logger> {
-    
-    public LiteralLogging(Logger logger) {
-        super(logger);
-    }
-
-    @Override
-    public void run() {
-        logger.info("Hello world from test log");
-    }
-
-}
-
-/**
- * INFO logs a string literal wrapped within INFO level check.
- * 
- * @author Michael.Zhou
- */
-class InfoCheckedLogging extends TestUnitWork<Logger> {
-    
-    public InfoCheckedLogging(Logger logger) {
-        super(logger);
-    }
-
-    @Override
-    public void run() {
-        if (logger.isInfoEnabled()) {
-            logger.info("Hello world from test log");
-        }
-    }
-
-}
-
-/**
- * DEBUG logs a string literal wrapped within DEBUG level check.
- * 
- * @author Michael.Zhou
- */
-class DebugCheckedLogging extends TestUnitWork<Logger> {
-    
-    public DebugCheckedLogging(Logger logger) {
-        super(logger);
-    }
-
-    @Override
-    public void run() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Hello world from test log");
-        }
-    }
-
 }
 
 /**
@@ -148,7 +88,45 @@ class TraceCheckedLogging extends TestUnitWork<Logger> {
 }
 
 /**
- * INFO logs a concatenated string within INFO level check.
+ * Logs a string literal without level check.
+ * 
+ * @author Michael.Zhou
+ */
+class LiteralLogging extends TestUnitWork<Logger> {
+    
+    public LiteralLogging(Logger logger) {
+        super(logger);
+    }
+
+    @Override
+    public void run() {
+        logger.info("Hello world from test log");
+    }
+
+}
+
+/**
+ * Logs a string literal wrapped within level check.
+ * 
+ * @author Michael.Zhou
+ */
+class LevelCheckedLogging extends TestUnitWork<Logger> {
+    
+    public LevelCheckedLogging(Logger logger) {
+        super(logger);
+    }
+
+    @Override
+    public void run() {
+        if (logger.isInfoEnabled()) {
+            logger.info("Hello world from test log");
+        }
+    }
+
+}
+
+/**
+ * Logs a string concatenated via '+' wrapped within level check.
  * 
  * @author Michael.Zhou
  */
@@ -170,7 +148,7 @@ class ConcatStringLogging extends TestUnitWork<Logger> {
 }
 
 /**
- * INFO logs a SLF4J-style formatted string within INFO level check.
+ * Logs a string via SLF4J-style formatting wrapped within level check.
  * 
  * @author Michael.Zhou
  */
@@ -192,7 +170,7 @@ class FormattedStringLogging extends TestUnitWork<Logger> {
 }
 
 /**
- * INFO logs a Java built-in formatted string within INFO level check.
+ * Logs a string via Java built-in formatting wrapped within level check.
  * 
  * @author Michael.Zhou
  */
