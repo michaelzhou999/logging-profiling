@@ -1,5 +1,9 @@
 package com.test.logging.common;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+
 /**
  * The logging test launches multiple threads and executes logging statements
  * repeatedly within each single thread.
@@ -29,7 +33,7 @@ public class LoggingTest<L> {
      * @param nThreads number of threads that concurrently log
      * @param nRepeats number of times to call logging in a thread
      */
-    public void oneRun(final int nThreads, final int nRepeats) {
+    public void oneRun(final int nThreads, final int nRepeats, final PrintStream output) {
         Thread[] threads = new Thread[nThreads];
         for (int i = 0; i < nThreads; i++) {
             final TestUnitWork<L> unitWork = unitWorkFactory.createUnitWork();
@@ -50,7 +54,7 @@ public class LoggingTest<L> {
             threads[i].start();
         }
 
-        // Wait till all threads are finished logging
+        // Wait till all threads are done with logging
         try {
             for (int i = 0; i < nThreads; i++) {
                 threads[i].join();
@@ -68,21 +72,52 @@ public class LoggingTest<L> {
         System.out.println("Total number of logging statements: " + nThreads * nRepeats);
         System.out.println("Time used: " + duration + " milli-seconds.");
         System.out.println("");
+
+        if (output != null) {
+            output.print("\"");
+            output.print(description);
+            output.print("\",\"");
+            output.print(nThreads);
+            output.print("*");
+            output.print(nRepeats);
+            output.print("\",");
+            output.print(duration);
+            output.println();
+        }
     }
 
     public void run() {
-        if (!options.isMultipleRuns()) {
-            oneRun(options.getNumberOfThreads(), options.getNumberOfRepeats());
+        PrintStream output = null;
+        String outputFilename = options.getResultsFilename();
+        if (outputFilename != null) {
+            try {
+                output = new PrintStream(new FileOutputStream(outputFilename));
+            }
+            catch (IOException ioe) {
+                System.err.println("Failed to open result output file " + outputFilename);
+            }
         }
         else {
-            final int[] ts = options.getThreadSeries();
-            for (int r = 0; r < options.getNumberOfRuns(); r++) {
+            System.err.println("No result summary file is specified.");
+        }
+
+        for (int r = 0; r < options.getNumberOfRuns(); r++) {
+            if (!options.isUseThreadSeries()) {
+                oneRun(options.getNumberOfThreads(), options.getNumberOfRepeats(), output);
+            }
+            else {
+                final int[] ts = options.getThreadSeries();
                 for (int tsi = 0; tsi < ts.length; tsi++) {
                     final int nThreads = ts[tsi];
                     final int nRepeats = options.getNumberOfWrites() / nThreads;
-                    oneRun(nThreads, nRepeats);
+                    oneRun(nThreads, nRepeats, output);
                 }
             }
+        }
+
+        if (output != null) {
+            output.flush();
+            output.close();
         }
     }
 

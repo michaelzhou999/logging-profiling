@@ -88,6 +88,24 @@ or in the long format
 
     mvn exec:java -Dexec.args="--thread <number_of_threads> --repeat <number_of_repeats>"
 
+Instead of specifying threads and repeats, the test can also be run by specifying
+a single parameter: the number of writes for each particular test. A preset
+series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 1000.
+
+    mvn exec:java -Dexec.args="-w <number_of_writes>"
+
+or in the long format
+
+    mvn exec:java -Dexec.args="--write <number_of_writes>"
+
+To repeat the test over and over again, use "run" option.
+
+    mvn exec:java -Dexec.args="-n <number_of_runs>"
+
+or in the long format
+
+    mvn exec:java -Dexec.args="--run <number_of_runs>"
+
 To get help,
 
     mvn exec:java -Dexec.args="-h"

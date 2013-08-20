@@ -11,20 +11,19 @@ import org.slf4j.LoggerFactory;
  *
  * @author Michael.Zhou
  */
-public class Profiler extends BaseProfiler
-{
+public class Profiler extends BaseProfiler {
     static {
         setAppName("logback profiler");
     }
 
-    public static void main(String[] args) throws InterruptedException
-    {
+    public static void main(String[] args) throws InterruptedException {
+        printBanner();
+
         TestOptions opts = getTestOptions();
+        opts.setDefaultResultsFilename("logback.csv");
         if (!opts.parseCliOptions(getAppName(), args)) {
             return;
         }
-        
-        printBanner();
 
         // File appender
         Logger logger = LoggerFactory.getLogger(Profiler.class);

@@ -11,28 +11,27 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Michael.Zhou
  */
-public class Profiler extends BaseProfiler
-{
+public class Profiler extends BaseProfiler {
     static {
         setAppName("log4j v2 (native) profiler");
     }
 
-    public static void main(String[] args) throws InterruptedException
-    {
+    public static void main(String[] args) throws InterruptedException {
+        printBanner();
+
         TestOptions opts = getTestOptions();
+        opts.setDefaultResultsFilename("log4jv2-native.csv");
         if (!opts.parseCliOptions(getAppName(), args)) {
             return;
         }
         
-        printBanner();
-
         // File appender
         Logger logger = LogManager.getLogger("SyncFileLogger");
         // Iterate through all unit work types and execute test scenarios
         System.out.println("(((((((((((((   SLOW FILE LOGGER ))))))))))))))))");
         UnitWorkFactory.Type[] allTypes = UnitWorkFactory.Type.class.getEnumConstants();
         for (UnitWorkFactory.Type t : allTypes) {
-            new LoggingTest<Logger>(t.toString(), new UnitWorkFactory(t, logger), opts).run();
+            new LoggingTest<Logger>(t.toString() + "-FileAppender", new UnitWorkFactory(t, logger), opts).run();
         }
 
         // Fast file appender
@@ -40,9 +39,8 @@ public class Profiler extends BaseProfiler
         // Iterate through all unit work types and execute test scenarios
         System.out.println("(((((((((((((   FAST FILE LOGGER ))))))))))))))))");
         for (UnitWorkFactory.Type t : allTypes) {
-            new LoggingTest<Logger>(t.toString(), new UnitWorkFactory(t, fastLogger), opts).run();
+            new LoggingTest<Logger>(t.toString() + "-FastFileAppender", new UnitWorkFactory(t, fastLogger), opts).run();
         }
-        
     }
 
 }

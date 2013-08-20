@@ -48,51 +48,76 @@ public class TestOptions {
     /** Minimum number of runs */
     protected static final int MIN_NUMBER_OF_RUNS = 1;
     /** Default number of runs */
-    protected static final int DEFAULT_NUMBER_OF_RUNS = 3;
+    protected static final int DEFAULT_NUMBER_OF_RUNS = 1;
     /** Current number of runs */
     protected int NUMBER_OF_RUNS = DEFAULT_NUMBER_OF_RUNS;
 
-    /** Thread series for each test run. Used with --write option. */
+    /** Thread series for each test run, used with --write option */
     protected int[] THREAD_SERIES = new int[]{1, 2, 5, 10, 20, 50, 100, 200, 500, 1000};
+    /** Indication of using thread series */
+    protected boolean useThreadSeries;
+
+    /** Default Filename of test results summary */
+    protected String defaultResultsFilename;
+    /** File name of test results summary */
+    protected String resultsFilename;
 
     /** Command line options backed by Apache Commons CLI library */
     protected Options options = new Options();
 
-    /** Flag to indicate multiple runs */
-    protected boolean multipleRuns = false;
+    /** CLI arguments */
+    private static final String ARG_HELP = "help";
+    private static final String ARG_THREAD = "thread";
+    private static final String ARG_REPEAT = "repeat";
+    private static final String ARG_WRITE = "write";
+    private static final String ARG_RUN = "run";
+    private static final String ARG_FILENAME = "filename";
 
     public TestOptions() {
         // Build command line options
-        Option help = new Option("h", "help", false, "usage");
+        Option help = new Option("h", ARG_HELP, false, "usage");
         options.addOption(help);
 
-        Option thread = OptionBuilder.withArgName("threads")
+        Option thread = OptionBuilder.withArgName(ARG_THREAD)
             .hasArg()
             .withDescription("number of threads: " + MIN_NUMBER_OF_THREADS + " ~ " + MAX_NUMBER_OF_THREADS)
             .create("t");
-        thread.setLongOpt("thread");
+        thread.setLongOpt(ARG_THREAD);
         options.addOption(thread);
 
-        Option repeat = OptionBuilder.withArgName("repeats")
+        Option repeat = OptionBuilder.withArgName(ARG_REPEAT)
             .hasArg()
             .withDescription("number of times each thread executes the intended logging statement: " + MIN_NUMBER_OF_REPEATS + " ~ " + MAX_NUMBER_OF_REPEATS)
             .create("r");
-        repeat.setLongOpt("repeat");
+        repeat.setLongOpt(ARG_REPEAT);
         options.addOption(repeat);
 
-        Option write = OptionBuilder.withArgName("writes")
+        Option write = OptionBuilder.withArgName(ARG_WRITE)
             .hasArg()
             .withDescription("number of writes in each run (number of threads/repeats will be ignored if this option is specified): " + MIN_NUMBER_OF_WRITES + " ~ " + MAX_NUMBER_OF_WRITES)
             .create("w");
-        write.setLongOpt("write");
+        write.setLongOpt(ARG_WRITE);
         options.addOption(write);
 
-        Option run = OptionBuilder.withArgName("runs")
+        Option run = OptionBuilder.withArgName(ARG_RUN)
             .hasArg()
             .withDescription("number of runs: " + MIN_NUMBER_OF_RUNS + " ~ " + MAX_NUMBER_OF_RUNS)
             .create("n");
-        run.setLongOpt("run");
+        run.setLongOpt(ARG_RUN);
         options.addOption(run);
+
+        Option filename = OptionBuilder.withArgName(ARG_FILENAME)
+            .hasArg()
+            .withDescription("filename of results summary")
+            .create("f");
+        filename.setLongOpt(ARG_FILENAME);
+        options.addOption(filename);
+    }
+
+    /** Prints usage */
+    public void printUsage(String appName) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(appName, options);
     }
 
     /** Parse CLI options. If invalid options are seen, print out usage,
@@ -111,22 +136,25 @@ public class TestOptions {
         }
         catch (ParseException pe) {
             System.out.println("Invalid CLI options.");
-            pe.printStackTrace();
+            printUsage(appName);
             return true;
         }
 
-        if (line.hasOption("help")) {
+        if (line.hasOption(ARG_HELP)) {
             // If --help is specified on CLI, all other options will be ignored, usage will be printed
             // and program exits.
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(appName, options);
+            printUsage(appName);
             return false;
         }
 
-        if (!line.hasOption("write")) {
-            if (line.hasOption("thread")) {
+        if (line.hasOption(ARG_FILENAME)) {
+            resultsFilename = line.getOptionValue(ARG_FILENAME);
+        }
+
+        if (!line.hasOption(ARG_WRITE)) {
+            if (line.hasOption(ARG_THREAD)) {
                 try {
-                    Integer nThread = Integer.valueOf(line.getOptionValue("thread"));
+                    Integer nThread = Integer.valueOf(line.getOptionValue(ARG_THREAD));
                     if (MIN_NUMBER_OF_THREADS <= nThread && nThread <= MAX_NUMBER_OF_THREADS) {
                         NUMBER_OF_THREADS = nThread;
                     }
@@ -136,9 +164,9 @@ public class TestOptions {
                 }
             }
 
-            if (line.hasOption("repeat")) {
+            if (line.hasOption(ARG_REPEAT)) {
                 try {
-                    Integer nRepeat = Integer.valueOf(line.getOptionValue("repeat"));
+                    Integer nRepeat = Integer.valueOf(line.getOptionValue(ARG_REPEAT));
                     if (MIN_NUMBER_OF_REPEATS <= nRepeat && nRepeat <= MAX_NUMBER_OF_REPEATS) {
                         NUMBER_OF_REPEATS = nRepeat;
                     }
@@ -149,30 +177,30 @@ public class TestOptions {
             }
         }
         else {
-            multipleRuns = true;
+            useThreadSeries = true;
             try {
-                Integer nWrite = Integer.valueOf(line.getOptionValue("write"));
-                if (MIN_NUMBER_OF_WRITES <= nWrite && nWrite <= MAX_NUMBER_OF_WRITES) {
+                Integer nWrites = Integer.valueOf(line.getOptionValue(ARG_WRITE));
+                if (MIN_NUMBER_OF_WRITES <= nWrites && nWrites <= MAX_NUMBER_OF_WRITES) {
                     // Round the number of writes to nearest 1000
-                    NUMBER_OF_WRITES = nWrite / 1000 * 1000;
+                    NUMBER_OF_WRITES = nWrites / 1000 * 1000;
                     System.out.println("number of writes: " + NUMBER_OF_WRITES);
                 }
             }
             finally {
                 // Ignore any NumberFormatException and use default
             }
+        }
 
-            if (line.hasOption("run")) {
-                try {
-                    Integer nRun = Integer.valueOf(line.getOptionValue("run"));
-                    if (MIN_NUMBER_OF_RUNS <= nRun && nRun <= MAX_NUMBER_OF_RUNS) {
-                        NUMBER_OF_RUNS = nRun;
-                        System.out.println("number of runs: " + NUMBER_OF_RUNS);
-                    }
+        if (line.hasOption(ARG_RUN)) {
+            try {
+                Integer nRun = Integer.valueOf(line.getOptionValue(ARG_RUN));
+                if (MIN_NUMBER_OF_RUNS <= nRun && nRun <= MAX_NUMBER_OF_RUNS) {
+                    NUMBER_OF_RUNS = nRun;
+                    System.out.println("number of runs: " + NUMBER_OF_RUNS);
                 }
-                finally {
-                    // Ignore any NumberFormatException and use default
-                }
+            }
+            finally {
+                // Ignore any NumberFormatException and use default
             }
         }
 
@@ -204,14 +232,29 @@ public class TestOptions {
         return NUMBER_OF_RUNS;
     }
 
-    /** Returns true if the test should run multiple times */
-    public boolean isMultipleRuns() {
-        return multipleRuns;
-    }
-
     /** Returns thread series */
     public int[] getThreadSeries() {
         return THREAD_SERIES;
+    }
+
+    /** Returns true if using thread series */
+    public boolean isUseThreadSeries() {
+        return useThreadSeries;
+    }
+
+    /** Returns results filename */
+    public String getResultsFilename() {
+        if (resultsFilename != null) {
+            return resultsFilename;
+        }
+        else {
+            return defaultResultsFilename;
+        }
+    }
+
+    /** Sets default results filename that will be used if no filename is passed through command line */
+    public void setDefaultResultsFilename(String filename) {
+        defaultResultsFilename = filename;
     }
 
 }

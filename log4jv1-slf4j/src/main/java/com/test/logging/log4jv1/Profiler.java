@@ -11,21 +11,20 @@ import org.slf4j.LoggerFactory;
  *
  * @author Michael.Zhou
  */
-public class Profiler extends BaseProfiler
-{
+public class Profiler extends BaseProfiler {
     static {
         setAppName("log4j v1 (via slf4j) profiler");
     }
 
-    public static void main(String[] args) throws InterruptedException
-    {
+    public static void main(String[] args) throws InterruptedException {
+        printBanner();
+
         TestOptions opts = getTestOptions();
+        opts.setDefaultResultsFilename("log4jv1-slf4j.csv");
         if (!opts.parseCliOptions(getAppName(), args)) {
             return;
         }
         
-        printBanner();
-
         Logger logger = LoggerFactory.getLogger(Profiler.class);
 
         // Iterate through all unit work types and execute test scenarios
@@ -33,7 +32,6 @@ public class Profiler extends BaseProfiler
         for (UnitWorkFactory.Type t : allTypes) {
             new LoggingTest<Logger>(t.toString(), new UnitWorkFactory(t, logger), opts).run();
         }
-        
     }
 
 }
