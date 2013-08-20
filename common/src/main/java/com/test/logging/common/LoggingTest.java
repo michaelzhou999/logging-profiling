@@ -91,7 +91,8 @@ public class LoggingTest<L> {
         String outputFilename = options.getResultsFilename();
         if (outputFilename != null) {
             try {
-                output = new PrintStream(new FileOutputStream(outputFilename));
+                // Append to file
+                output = new PrintStream(new FileOutputStream(outputFilename, true));
             }
             catch (IOException ioe) {
                 System.err.println("Failed to open result output file " + outputFilename);
