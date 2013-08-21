@@ -41,6 +41,17 @@ public class Profiler extends BaseProfiler {
         for (UnitWorkFactory.Type t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-FastFileAppender", new UnitWorkFactory(t, fastLogger), opts).run();
         }
+
+        // Async logger
+        Logger asyncLogger = LogManager.getLogger("AsyncFastFileLogger");
+        // Iterate through all unit work types and execute test scenarios
+        System.out.println("(((((((((((((   ASYNC FAST FILE LOGGER ))))))))))))))))");
+        for (UnitWorkFactory.Type t : allTypes) {
+            new LoggingTest<Logger>(t.toString() + "-AsyncFastFileLogger", new UnitWorkFactory(t, asyncLogger), opts).run();
+        }
+        // Wait for 20 seconds for I/O to catch up and closing of async appenders
+        System.out.println("Waiting for 20 seconds for I/O to catch up and proper closing of async appenders.");
+        Thread.sleep(20000);
     }
 
 }

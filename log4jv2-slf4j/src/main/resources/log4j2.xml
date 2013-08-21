@@ -11,6 +11,11 @@
         <pattern>%d %p %c{1.} [%t] %m%n</pattern>
       </PatternLayout>
     </FastFile>
+    <FastFile name="ASYNCFASTFILE" fileName="log4jv2-async.out" immediateFlush="false" append="true">
+      <PatternLayout>
+        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </FastFile>
   </appenders>
   <loggers>
     <logger name="SyncFileLogger" level="debug">
@@ -19,6 +24,9 @@
     <logger name="SyncFastFileLogger" level="debug">
       <appender-ref ref="FASTFILE"/>
     </logger>
+    <asyncLogger name="AsyncFastFileLogger" level="debug">
+      <appender-ref ref="ASYNCFASTFILE"/>
+    </asyncLogger>
     <root level="debug">
     </root>
   </loggers>
