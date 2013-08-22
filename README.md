@@ -90,7 +90,7 @@ or in the long format
 
 Instead of specifying threads and repeats, the test can also be run by specifying
 a single parameter: the number of writes for each particular test. A preset
-series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 1000.
+series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 500.
 
     mvn exec:java -Dexec.args="-w <number_of_writes>"
 
