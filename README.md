@@ -77,40 +77,62 @@ Run
 
 To run profiling test against each individual logging framework, e.g., log4jv2-native,
 
+- Project "log4jv1-native"
+
+    cd log4jv1-native
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv1.Profiler"
+
+- Project "log4jv1-slf4j"
+
+    cd log4jv1-slf4j
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv1.Profiler"
+
+- Project "log4jv2-native"
+
     cd log4jv2-native
-    mvn exec:java
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv2.Profiler"
 
-To change the number of threads and repeats,
+- Project "log4jv2-slf4j"
 
-    mvn exec:java -Dexec.args="-t <number_of_threads> -r <number_of_repeats>"
+    cd log4jv2-slf4j
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv2.Profiler"
+
+- Project "logback"
+
+    cd logback
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler"
+
+To change the number of threads and repeats, add additional arguments to the command line. For example
+
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -t <number_of_threads> -r <number_of_repeats>"
 
 or in the long format
 
-    mvn exec:java -Dexec.args="--thread <number_of_threads> --repeat <number_of_repeats>"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --thread <number_of_threads> --repeat <number_of_repeats>"
 
 Instead of specifying threads and repeats, the test can also be run by specifying
 a single parameter: the number of writes for each particular test. A preset
 series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 500.
 
-    mvn exec:java -Dexec.args="-w <number_of_writes>"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -w <number_of_writes>"
 
 or in the long format
 
-    mvn exec:java -Dexec.args="--write <number_of_writes>"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --write <number_of_writes>"
 
 To repeat the test over and over again, use "run" option.
 
-    mvn exec:java -Dexec.args="-n <number_of_runs>"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -n <number_of_runs>"
 
 or in the long format
 
-    mvn exec:java -Dexec.args="--run <number_of_runs>"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --run <number_of_runs>"
 
 To get help,
 
-    mvn exec:java -Dexec.args="-h"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -h"
 
 or in the long format
 
-    mvn exec:java -Dexec.args="--help"
+    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --help"
 

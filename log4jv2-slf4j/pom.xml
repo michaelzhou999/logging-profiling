@@ -24,12 +24,12 @@
         <executions>
           <execution>
             <goals>
-              <goal>java</goal>
+              <goal>exec</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <mainClass>com.test.logging.log4jv2.Profiler</mainClass>
+          <executable>java</executable>
         </configuration>
       </plugin>
     </plugins>
