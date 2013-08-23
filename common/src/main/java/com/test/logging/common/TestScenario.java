@@ -1,17 +1,17 @@
 package com.test.logging.common;
 
-/** 
- * Abstract template class for a piece of logging test work.
- * Derived classes must override the run method.
+/**
+ * Abstract template class for a piece of logging test work. Derived classes
+ * must override the run method.
  * 
  * @author Michael.Zhou
  */
-public abstract class TestUnitWork<L> {
-    
+public abstract class TestScenario<L> {
+
     /** Logger */
     protected L logger;
-    
-    public TestUnitWork(L logger) {
+
+    public TestScenario(L logger) {
         this.logger = logger;
     }
 

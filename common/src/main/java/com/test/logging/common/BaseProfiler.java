@@ -2,11 +2,10 @@ package com.test.logging.common;
 
 /**
  * Base class for logging profilers
- *
+ * 
  * @author Michael.Zhou
  */
-public class BaseProfiler
-{
+public class BaseProfiler {
     /** Options for running the profiler */
     protected static TestOptions opts = new TestOptions();
 
@@ -32,10 +31,8 @@ public class BaseProfiler
         return APPNAME;
     }
 
-
     /** Return test options */
     public static TestOptions getTestOptions() {
         return opts;
     }
 }
-

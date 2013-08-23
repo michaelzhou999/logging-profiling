@@ -1,14 +1,15 @@
 package com.test.logging.log4jv1;
 
-import com.test.logging.common.BaseProfiler;
-import com.test.logging.common.TestOptions;
-import com.test.logging.common.LoggingTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.test.logging.common.BaseProfiler;
+import com.test.logging.common.LoggingTest;
+import com.test.logging.common.TestOptions;
+
 /**
  * Profiling LOG4J version 1 via SLF4J API
- *
+ * 
  * @author Michael.Zhou
  */
 public class Profiler extends BaseProfiler {
@@ -24,13 +25,13 @@ public class Profiler extends BaseProfiler {
         if (!opts.parseCliOptions(getAppName(), args)) {
             return;
         }
-        
+
         Logger logger = LoggerFactory.getLogger(Profiler.class);
 
         // Iterate through all unit work types and execute test scenarios
-        UnitWorkFactory.Type[] allTypes = UnitWorkFactory.Type.class.getEnumConstants();
-        for (UnitWorkFactory.Type t : allTypes) {
-            new LoggingTest<Logger>(t.toString(), new UnitWorkFactory(t, logger), opts).run();
+        TestFactory.Type[] allTypes = TestFactory.Type.class.getEnumConstants();
+        for (TestFactory.Type t : allTypes) {
+            new LoggingTest<Logger>(t.toString(), new TestFactory(t, logger), opts).run();
         }
     }
 

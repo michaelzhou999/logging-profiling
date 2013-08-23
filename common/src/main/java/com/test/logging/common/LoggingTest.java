@@ -7,7 +7,7 @@ import java.io.PrintStream;
 /**
  * The logging test launches multiple threads and executes logging statements
  * repeatedly within each single thread.
- *
+ * 
  * @author Michael.Zhou
  */
 public class LoggingTest<L> {
@@ -16,34 +16,36 @@ public class LoggingTest<L> {
     protected String description;
 
     /** Factory to create units of logging test work */
-    protected TestUnitWorkFactory<L> unitWorkFactory;
+    protected ITestScenarioFactory<L> testFactory;
 
     /** Logging test options */
     protected TestOptions options;
 
-    public LoggingTest(String description, TestUnitWorkFactory<L> unitWorkFactory, TestOptions options) {
+    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, TestOptions options) {
         this.description = description;
         this.options = options;
-        this.unitWorkFactory = unitWorkFactory;
+        this.testFactory = testFactory;
     }
 
     /**
      * Run a unit of logging piece in multiple threads.
-     *
-     * @param nThreads number of threads that concurrently log
-     * @param nRepeats number of times to call logging in a thread
+     * 
+     * @param nThreads
+     *            number of threads that concurrently log
+     * @param nRepeats
+     *            number of times to call logging in a thread
      */
     public void oneRun(final int nThreads, final int nRepeats, final PrintStream output) {
         Thread[] threads = new Thread[nThreads];
         for (int i = 0; i < nThreads; i++) {
-            final TestUnitWork<L> unitWork = unitWorkFactory.createUnitWork();
+            final TestScenario<L> unitWork = testFactory.createTestScenario();
             threads[i] = new Thread(new Runnable() {
-                    public void run() {
-                        for (int j = 0; j < nRepeats; j++) {
-                            unitWork.run();
-                        }
+                public void run() {
+                    for (int j = 0; j < nRepeats; j++) {
+                        unitWork.run();
                     }
-                }, "Thread-" + i);
+                }
+            }, "Thread-" + i);
         }
 
         System.out.println("");
@@ -59,8 +61,7 @@ public class LoggingTest<L> {
             for (int i = 0; i < nThreads; i++) {
                 threads[i].join();
             }
-        }
-        catch (InterruptedException ie) {
+        } catch (InterruptedException ie) {
             System.out.println("!!!!!!!!!!!   ERROR   !!!!!!!!!!");
             return;
         }
@@ -93,20 +94,17 @@ public class LoggingTest<L> {
             try {
                 // Append to file
                 output = new PrintStream(new FileOutputStream(outputFilename, true));
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 System.err.println("Failed to open result output file " + outputFilename);
             }
-        }
-        else {
+        } else {
             System.err.println("No result summary file is specified.");
         }
 
         for (int r = 0; r < options.getNumberOfRuns(); r++) {
             if (!options.isUseThreadSeries()) {
                 oneRun(options.getNumberOfThreads(), options.getNumberOfRepeats(), output);
-            }
-            else {
+            } else {
                 final int[] ts = options.getThreadSeries();
                 for (int tsi = 0; tsi < ts.length; tsi++) {
                     final int nThreads = ts[tsi];

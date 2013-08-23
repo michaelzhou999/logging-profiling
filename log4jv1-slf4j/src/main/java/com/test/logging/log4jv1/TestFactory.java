@@ -1,19 +1,19 @@
-package com.test.logging.log4jv2;
+package com.test.logging.log4jv1;
 
-import com.test.logging.common.TestUnitWork;
-import com.test.logging.common.TestUnitWorkFactory;
 import org.slf4j.Logger;
 
+import com.test.logging.common.ITestScenarioFactory;
+import com.test.logging.common.TestScenario;
 
 /**
- * Factory to create units of logging test work to use with Log4j v2 SLF4J APIs.
+ * Factory to create units of logging test work to use with Log4j v1 SLF4J APIs.
  * 
  * @author Michael.Zhou
  */
-public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
-    
+public class TestFactory implements ITestScenarioFactory<Logger> {
+
     public static enum Type {
-        //TRACE_CHECKED_STRING("TRACE Level checked string literal (ms)"),
+        // TRACE_CHECKED_STRING("TRACE Level checked string literal (ms)"),
         LITERAL("String literal (ms)"),
         LEVEL_CHECKED_LITERAL("Level checked string literal (ms)"),
         CONCAT_STRING("Level checked string concatenated via + (ms)"),
@@ -22,49 +22,48 @@ public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
 
         /** String representation of the factory type */
         private final String name;
-        
+
         private Type(String name) {
             this.name = name;
         }
-        
+
         @Override
         public String toString() {
             return this.name;
         }
     }
-    
+
     /** Type of factory */
     private Type type;
-    
+
     /** Logger */
     private Logger logger;
-    
-    public UnitWorkFactory(Type type, Logger logger) {
+
+    public TestFactory(Type type, Logger logger) {
         this.type = type;
         this.logger = logger;
     }
-    
+
     /** All unit works created by this factory share the same logger. */
-    @Override
-    public TestUnitWork<Logger> createUnitWork() {
+    public TestScenario<Logger> createTestScenario() {
         switch (this.type) {
-            //case TRACE_CHECKED_STRING:
-            //    return new TraceCheckedLogging(logger);
-            case LITERAL:
-                return new LiteralLogging(logger);
-            case LEVEL_CHECKED_LITERAL:
-                return new LevelCheckedLogging(logger);
-            case CONCAT_STRING:
-                return new ConcatStringLogging(logger);
-            case SLF4J_FORMATTED_STRING:
-                return new FormattedStringLogging(logger);
-            case JAVA_FORMATTED_STRING:
-                return new JavaFormattedStringLogging(logger);
-            default:
-                throw new RuntimeException("Unsupported type of factory");
+        // case TRACE_CHECKED_STRING:
+        // return new TraceCheckedLogging(logger);
+        case LITERAL:
+            return new LiteralLogging(logger);
+        case LEVEL_CHECKED_LITERAL:
+            return new LevelCheckedLogging(logger);
+        case CONCAT_STRING:
+            return new ConcatStringLogging(logger);
+        case SLF4J_FORMATTED_STRING:
+            return new FormattedStringLogging(logger);
+        case JAVA_FORMATTED_STRING:
+            return new JavaFormattedStringLogging(logger);
+        default:
+            throw new RuntimeException("Unsupported type of factory");
         }
     }
-    
+
 }
 
 /**
@@ -72,8 +71,8 @@ public class UnitWorkFactory extends TestUnitWorkFactory<Logger> {
  * 
  * @author Michael.Zhou
  */
-class TraceCheckedLogging extends TestUnitWork<Logger> {
-    
+class TraceCheckedLogging extends TestScenario<Logger> {
+
     public TraceCheckedLogging(Logger logger) {
         super(logger);
     }
@@ -92,8 +91,8 @@ class TraceCheckedLogging extends TestUnitWork<Logger> {
  * 
  * @author Michael.Zhou
  */
-class LiteralLogging extends TestUnitWork<Logger> {
-    
+class LiteralLogging extends TestScenario<Logger> {
+
     public LiteralLogging(Logger logger) {
         super(logger);
     }
@@ -110,8 +109,8 @@ class LiteralLogging extends TestUnitWork<Logger> {
  * 
  * @author Michael.Zhou
  */
-class LevelCheckedLogging extends TestUnitWork<Logger> {
-    
+class LevelCheckedLogging extends TestScenario<Logger> {
+
     public LevelCheckedLogging(Logger logger) {
         super(logger);
     }
@@ -130,8 +129,8 @@ class LevelCheckedLogging extends TestUnitWork<Logger> {
  * 
  * @author Michael.Zhou
  */
-class ConcatStringLogging extends TestUnitWork<Logger> {
-    
+class ConcatStringLogging extends TestScenario<Logger> {
+
     public ConcatStringLogging(Logger logger) {
         super(logger);
     }
@@ -152,12 +151,12 @@ class ConcatStringLogging extends TestUnitWork<Logger> {
  * 
  * @author Michael.Zhou
  */
-class FormattedStringLogging extends TestUnitWork<Logger> {
+class FormattedStringLogging extends TestScenario<Logger> {
 
     public FormattedStringLogging(Logger logger) {
         super(logger);
     }
-    
+
     @Override
     public void run() {
         String world = "world";
@@ -174,12 +173,12 @@ class FormattedStringLogging extends TestUnitWork<Logger> {
  * 
  * @author Michael.Zhou
  */
-class JavaFormattedStringLogging extends TestUnitWork<Logger> {
+class JavaFormattedStringLogging extends TestScenario<Logger> {
 
     public JavaFormattedStringLogging(Logger logger) {
         super(logger);
     }
-    
+
     @Override
     public void run() {
         String world = "world";
