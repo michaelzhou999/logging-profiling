@@ -19,9 +19,9 @@ public class LoggingTest<L> {
     protected ITestScenarioFactory<L> testFactory;
 
     /** Logging test options */
-    protected ProfilerOptions options;
+    protected TestOptions options;
 
-    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, ProfilerOptions options) {
+    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, TestOptions options) {
         this.description = description;
         this.options = options;
         this.testFactory = testFactory;
