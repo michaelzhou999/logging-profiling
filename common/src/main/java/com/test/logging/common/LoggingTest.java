@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * The logging test launches multiple threads and executes logging statements
- * repeatedly within each single thread. Time spent on execution will be
- * recorded to the results file.
+ * The logging test launches multiple threads and executes logging statements repeatedly within each single thread. Time
+ * spent on execution will be recorded to the results file.
  * 
  * @author Michael.Zhou
  */
@@ -20,9 +19,9 @@ public class LoggingTest<L> {
     protected ITestScenarioFactory<L> testFactory;
 
     /** Logging test options */
-    protected TestOptions options;
+    protected ProfilerOptions options;
 
-    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, TestOptions options) {
+    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, ProfilerOptions options) {
         this.description = description;
         this.options = options;
         this.testFactory = testFactory;
@@ -33,6 +32,7 @@ public class LoggingTest<L> {
      * 
      * @param nThreads number of threads that concurrently log
      * @param nRepeats number of times to call logging in a thread
+     * @param output where to write results
      */
     public void oneRun(final int nThreads, final int nRepeats, final PrintStream output) {
         Thread[] threads = new Thread[nThreads];
@@ -59,7 +59,7 @@ public class LoggingTest<L> {
                 threads[i].join();
             }
         } catch (InterruptedException ie) {
-            System.out.println("!!!!!!!!!!!   ERROR   !!!!!!!!!!");
+            System.out.println("Thread is interrupted!");
             return;
         }
         long endTime = System.currentTimeMillis();
@@ -84,6 +84,7 @@ public class LoggingTest<L> {
         }
     }
 
+    /** Main method to run a logging test . */
     public void run() {
         PrintStream output = null;
         String outputFilename = options.getResultsFilename();

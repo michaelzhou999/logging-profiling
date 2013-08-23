@@ -7,7 +7,7 @@ package com.test.logging.common;
  */
 public class BaseProfiler {
     /** Options for running the profiler */
-    protected static TestOptions opts = new TestOptions();
+    protected static ProfilerOptions opts = new ProfilerOptions();
 
     /** Application name */
     protected static String APPNAME = "logging profiler (please set to a specific name)";
@@ -32,7 +32,7 @@ public class BaseProfiler {
     }
 
     /** Return test options */
-    public static TestOptions getTestOptions() {
+    public static ProfilerOptions getTestOptions() {
         return opts;
     }
 }

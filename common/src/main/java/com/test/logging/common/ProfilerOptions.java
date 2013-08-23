@@ -14,7 +14,7 @@ import org.apache.commons.cli.PosixParser;
  * 
  * @author Michael.Zhou
  */
-public class TestOptions {
+public class ProfilerOptions {
 
     /**
      * Maximum number of times logging statements should be executed in a thread
@@ -77,7 +77,7 @@ public class TestOptions {
     private static final String ARG_RUN = "run";
     private static final String ARG_FILENAME = "filename";
 
-    public TestOptions() {
+    public ProfilerOptions() {
         // Build command line options
         Option help = new Option("h", ARG_HELP, false, "usage");
         options.addOption(help);

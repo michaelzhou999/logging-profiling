@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
-import com.test.logging.common.TestOptions;
+import com.test.logging.common.ProfilerOptions;
 
 /**
  * Profiling LOGBACK via SLF4J API
@@ -20,7 +20,7 @@ public class Profiler extends BaseProfiler {
     public static void main(String[] args) throws InterruptedException {
         printBanner();
 
-        TestOptions opts = getTestOptions();
+        ProfilerOptions opts = getTestOptions();
         opts.setDefaultResultsFilename("logback.csv");
         if (!opts.parseCliOptions(getAppName(), args)) {
             return;
