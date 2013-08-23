@@ -30,20 +30,16 @@ public class LoggingTest<L> {
     /**
      * Run a unit of logging piece in multiple threads.
      * 
-     * @param nThreads
-     *            number of threads that concurrently log
-     * @param nRepeats
-     *            number of times to call logging in a thread
+     * @param nThreads number of threads that concurrently log
+     * @param nRepeats number of times to call logging in a thread
      */
     public void oneRun(final int nThreads, final int nRepeats, final PrintStream output) {
         Thread[] threads = new Thread[nThreads];
         for (int i = 0; i < nThreads; i++) {
-            final TestScenario<L> unitWork = testFactory.createTestScenario();
+            final TestScenario<L> unitWork = testFactory.createTestScenario(new TestScenarioOptions(nRepeats));
             threads[i] = new Thread(new Runnable() {
                 public void run() {
-                    for (int j = 0; j < nRepeats; j++) {
-                        unitWork.run();
-                    }
+                    unitWork.run();
                 }
             }, "Thread-" + i);
         }

@@ -11,11 +11,17 @@ public abstract class TestScenario<L> {
     /** Logger */
     protected L logger;
 
-    public TestScenario(L logger) {
+    /** Test scenario options */
+    protected TestScenarioOptions options;
+
+    public TestScenario(L logger, TestScenarioOptions options) {
         this.logger = logger;
+        this.options = options;
     }
 
-    /** Piece of logging work to be executed over and over again in a thread */
+    /**
+     * Piece of logging work to be executed in a thread
+     */
     abstract public void run();
 
 }

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.test.logging.common.ITestScenarioFactory;
 import com.test.logging.common.TestScenario;
+import com.test.logging.common.TestScenarioOptions;
 
 /**
  * Factory to create units of logging test work to use with Log4j v1 native
@@ -45,18 +46,18 @@ public class TestFactory implements ITestScenarioFactory<Logger> {
     }
 
     /** All unit works created by this factory share the same logger. */
-    public TestScenario<Logger> createTestScenario() {
+    public TestScenario<Logger> createTestScenario(TestScenarioOptions options) {
         switch (this.type) {
         // case TRACE_CHECKED_STRING:
         // return new TraceCheckedLogging(logger);
         case LITERAL:
-            return new LiteralLogging(logger);
+            return new LiteralLogging(logger, options);
         case LEVEL_CHECKED_LITERAL:
-            return new LevelCheckedLogging(logger);
+            return new LevelCheckedLogging(logger, options);
         case CONCAT_STRING:
-            return new ConcatStringLogging(logger);
+            return new ConcatStringLogging(logger, options);
         case JAVA_FORMATTED_STRING:
-            return new JavaFormattedStringLogging(logger);
+            return new JavaFormattedStringLogging(logger, options);
         default:
             throw new RuntimeException("Unsupported type of factory");
         }
@@ -71,14 +72,16 @@ public class TestFactory implements ITestScenarioFactory<Logger> {
  */
 class TraceCheckedLogging extends TestScenario<Logger> {
 
-    public TraceCheckedLogging(Logger logger) {
-        super(logger);
+    public TraceCheckedLogging(Logger logger, TestScenarioOptions options) {
+        super(logger, options);
     }
 
     @Override
     public void run() {
-        if (logger.isTraceEnabled()) {
-            logger.trace("Hello world from test log");
+        for (int i = 0; i < options.getNumberOfRepeats(); i++) {
+            if (logger.isTraceEnabled()) {
+                logger.trace("Hello world from test log");
+            }
         }
     }
 
@@ -91,13 +94,15 @@ class TraceCheckedLogging extends TestScenario<Logger> {
  */
 class LiteralLogging extends TestScenario<Logger> {
 
-    public LiteralLogging(Logger logger) {
-        super(logger);
+    public LiteralLogging(Logger logger, TestScenarioOptions options) {
+        super(logger, options);
     }
 
     @Override
     public void run() {
-        logger.info("Hello world from test log");
+        for (int i = 0; i < options.getNumberOfRepeats(); i++) {
+            logger.info("Hello world from test log");
+        }
     }
 
 }
@@ -109,14 +114,16 @@ class LiteralLogging extends TestScenario<Logger> {
  */
 class LevelCheckedLogging extends TestScenario<Logger> {
 
-    public LevelCheckedLogging(Logger logger) {
-        super(logger);
+    public LevelCheckedLogging(Logger logger, TestScenarioOptions options) {
+        super(logger, options);
     }
 
     @Override
     public void run() {
-        if (logger.isInfoEnabled()) {
-            logger.info("Hello world from test log");
+        for (int i = 0; i < options.getNumberOfRepeats(); i++) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Hello world from test log");
+            }
         }
     }
 
@@ -129,16 +136,18 @@ class LevelCheckedLogging extends TestScenario<Logger> {
  */
 class ConcatStringLogging extends TestScenario<Logger> {
 
-    public ConcatStringLogging(Logger logger) {
-        super(logger);
+    public ConcatStringLogging(Logger logger, TestScenarioOptions options) {
+        super(logger, options);
     }
 
     @Override
     public void run() {
         String world = "world";
         String testLog = "test log";
-        if (logger.isInfoEnabled()) {
-            logger.info("Hello " + world + " from " + testLog);
+        for (int i = 0; i < options.getNumberOfRepeats(); i++) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Hello " + world + " from " + testLog);
+            }
         }
     }
 
@@ -151,16 +160,18 @@ class ConcatStringLogging extends TestScenario<Logger> {
  */
 class JavaFormattedStringLogging extends TestScenario<Logger> {
 
-    public JavaFormattedStringLogging(Logger logger) {
-        super(logger);
+    public JavaFormattedStringLogging(Logger logger, TestScenarioOptions options) {
+        super(logger, options);
     }
 
     @Override
     public void run() {
         String world = "world";
         String testLog = "test log";
-        if (logger.isInfoEnabled()) {
-            logger.info(String.format("Hello %s from %s", world, testLog));
+        for (int i = 0; i < options.getNumberOfRepeats(); i++) {
+            if (logger.isInfoEnabled()) {
+                logger.info(String.format("Hello %s from %s", world, testLog));
+            }
         }
     }
 

@@ -8,7 +8,11 @@ package com.test.logging.common;
  */
 abstract public interface ITestScenarioFactory<L> {
 
-    /** Creates a unit of logging test work */
-    public TestScenario<L> createTestScenario();
+    /**
+     * Creates a unit of logging test work
+     * 
+     * @param options test scenario options
+     */
+    public TestScenario<L> createTestScenario(TestScenarioOptions options);
 
 }
