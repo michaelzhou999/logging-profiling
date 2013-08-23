@@ -9,24 +9,28 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
-
-/** Logging profiler options
- *
+/**
+ * Logging profiler options
+ * 
  * @author Michael.Zhou
  */
 public class TestOptions {
 
-    /** Maximum number of times logging statements should be executed in a thread */
-    protected static int MAX_NUMBER_OF_REPEATS = 10 * 1000 * 1000;  // 10 million
-    /** Minimum number of times logging statements should be executed in a thread */
+    /**
+     * Maximum number of times logging statements should be executed in a thread
+     */
+    protected static int MAX_NUMBER_OF_REPEATS = 10 * 1000 * 1000; // 10 million
+    /**
+     * Minimum number of times logging statements should be executed in a thread
+     */
     protected static int MIN_NUMBER_OF_REPEATS = 1;
     /** Default number of repeating logging statements */
-    protected static int DEFAULT_NUMBER_OF_REPEATS = 10 * 1000;  // 10 thousand
+    protected static int DEFAULT_NUMBER_OF_REPEATS = 10 * 1000; // 10 thousand
     /** Number of repeating logging statements */
     protected int NUMBER_OF_REPEATS = DEFAULT_NUMBER_OF_REPEATS;
 
     /** Maximum number of threads that concurrently write to log files */
-    protected static final int MAX_NUMBER_OF_THREADS = 100 * 1000;  // 100 thousand
+    protected static final int MAX_NUMBER_OF_THREADS = 100 * 1000; // 100 thousand
     /** Minimum number of threads that concurrently write to log files */
     protected static final int MIN_NUMBER_OF_THREADS = 1;
     /** Default number of threads */
@@ -35,11 +39,11 @@ public class TestOptions {
     protected int NUMBER_OF_THREADS = DEFAULT_NUMBER_OF_THREADS;
 
     /** Maximum number of writes allowed in a single run */
-    protected static final int MAX_NUMBER_OF_WRITES = 10 * 1000 * 1000;  // 10 million
+    protected static final int MAX_NUMBER_OF_WRITES = 10 * 1000 * 1000; // 10 million
     /** Minimum number of writes allowed in a single run */
-    protected static final int MIN_NUMBER_OF_WRITES = 1000;  // 1000
+    protected static final int MIN_NUMBER_OF_WRITES = 1000; // 1000
     /** Default number of writes */
-    protected static final int DEFAULT_NUMBER_OF_WRITES = 1 * 1000 * 1000;  // 1 million
+    protected static final int DEFAULT_NUMBER_OF_WRITES = 1 * 1000 * 1000; // 1 million
     /** Current number of writes */
     protected int NUMBER_OF_WRITES = DEFAULT_NUMBER_OF_WRITES;
 
@@ -53,7 +57,7 @@ public class TestOptions {
     protected int NUMBER_OF_RUNS = DEFAULT_NUMBER_OF_RUNS;
 
     /** Thread series for each test run, used with --write option */
-    protected int[] THREAD_SERIES = new int[]{1, 2, 5, 10, 20, 50, 100, 200, 500};
+    protected int[] THREAD_SERIES = new int[] { 1, 2, 5, 10, 20, 50, 100, 200 };
     /** Indication of using thread series */
     protected boolean useThreadSeries;
 
@@ -78,38 +82,37 @@ public class TestOptions {
         Option help = new Option("h", ARG_HELP, false, "usage");
         options.addOption(help);
 
-        Option thread = OptionBuilder.withArgName(ARG_THREAD)
-            .hasArg()
-            .withDescription("number of threads: " + MIN_NUMBER_OF_THREADS + " ~ " + MAX_NUMBER_OF_THREADS)
-            .create("t");
+        Option thread = OptionBuilder.withArgName(ARG_THREAD).hasArg()
+                .withDescription("number of threads: " + MIN_NUMBER_OF_THREADS + " ~ " + MAX_NUMBER_OF_THREADS)
+                .create("t");
         thread.setLongOpt(ARG_THREAD);
         options.addOption(thread);
 
-        Option repeat = OptionBuilder.withArgName(ARG_REPEAT)
-            .hasArg()
-            .withDescription("number of times each thread executes the intended logging statement: " + MIN_NUMBER_OF_REPEATS + " ~ " + MAX_NUMBER_OF_REPEATS)
-            .create("r");
+        Option repeat = OptionBuilder
+                .withArgName(ARG_REPEAT)
+                .hasArg()
+                .withDescription(
+                        "number of times each thread executes the intended logging statement: " + MIN_NUMBER_OF_REPEATS
+                                + " ~ " + MAX_NUMBER_OF_REPEATS).create("r");
         repeat.setLongOpt(ARG_REPEAT);
         options.addOption(repeat);
 
-        Option write = OptionBuilder.withArgName(ARG_WRITE)
-            .hasArg()
-            .withDescription("number of writes in each run (number of threads/repeats will be ignored if this option is specified): " + MIN_NUMBER_OF_WRITES + " ~ " + MAX_NUMBER_OF_WRITES)
-            .create("w");
+        Option write = OptionBuilder
+                .withArgName(ARG_WRITE)
+                .hasArg()
+                .withDescription(
+                        "number of writes in each run (number of threads/repeats will be ignored if this option is specified): "
+                                + MIN_NUMBER_OF_WRITES + " ~ " + MAX_NUMBER_OF_WRITES).create("w");
         write.setLongOpt(ARG_WRITE);
         options.addOption(write);
 
-        Option run = OptionBuilder.withArgName(ARG_RUN)
-            .hasArg()
-            .withDescription("number of runs: " + MIN_NUMBER_OF_RUNS + " ~ " + MAX_NUMBER_OF_RUNS)
-            .create("n");
+        Option run = OptionBuilder.withArgName(ARG_RUN).hasArg()
+                .withDescription("number of runs: " + MIN_NUMBER_OF_RUNS + " ~ " + MAX_NUMBER_OF_RUNS).create("n");
         run.setLongOpt(ARG_RUN);
         options.addOption(run);
 
-        Option filename = OptionBuilder.withArgName(ARG_FILENAME)
-            .hasArg()
-            .withDescription("filename of results summary")
-            .create("f");
+        Option filename = OptionBuilder.withArgName(ARG_FILENAME).hasArg()
+                .withDescription("filename of results summary").create("f");
         filename.setLongOpt(ARG_FILENAME);
         options.addOption(filename);
     }
@@ -120,28 +123,27 @@ public class TestOptions {
         formatter.printHelp(appName, options);
     }
 
-    /** Parse CLI options. If invalid options are seen, print out usage,
-     *  use default settings, and keep executing.
-     *
+    /**
+     * Parse CLI options. If invalid options are seen, print out usage, use default settings, and keep executing.
+     * 
      * @param args Command line argument list
-     *
-     * @return true if execution should continue; false if command line options indicate printing
-     *         the help message.
+     * 
+     * @return true if execution should continue; false if command line options indicate printing the help message.
      */
     public boolean parseCliOptions(String appName, String[] args) {
         CommandLineParser parser = new PosixParser();
         CommandLine line = null;
         try {
             line = parser.parse(options, args);
-        }
-        catch (ParseException pe) {
+        } catch (ParseException pe) {
             System.out.println("Invalid CLI options.");
             printUsage(appName);
             return true;
         }
 
         if (line.hasOption(ARG_HELP)) {
-            // If --help is specified on CLI, all other options will be ignored, usage will be printed
+            // If --help is specified on CLI, all other options will be ignored,
+            // usage will be printed
             // and program exits.
             printUsage(appName);
             return false;
@@ -158,8 +160,7 @@ public class TestOptions {
                     if (MIN_NUMBER_OF_THREADS <= nThread && nThread <= MAX_NUMBER_OF_THREADS) {
                         NUMBER_OF_THREADS = nThread;
                     }
-                }
-                finally {
+                } finally {
                     // Ignore any NumberFormatException and use default
                 }
             }
@@ -170,13 +171,11 @@ public class TestOptions {
                     if (MIN_NUMBER_OF_REPEATS <= nRepeat && nRepeat <= MAX_NUMBER_OF_REPEATS) {
                         NUMBER_OF_REPEATS = nRepeat;
                     }
-                }
-                finally {
+                } finally {
                     // Ignore any NumberFormatException and use default
                 }
             }
-        }
-        else {
+        } else {
             useThreadSeries = true;
             try {
                 Integer nWrites = Integer.valueOf(line.getOptionValue(ARG_WRITE));
@@ -185,8 +184,7 @@ public class TestOptions {
                     NUMBER_OF_WRITES = nWrites / 1000 * 1000;
                     System.out.println("number of writes: " + NUMBER_OF_WRITES);
                 }
-            }
-            finally {
+            } finally {
                 // Ignore any NumberFormatException and use default
             }
         }
@@ -198,8 +196,7 @@ public class TestOptions {
                     NUMBER_OF_RUNS = nRun;
                     System.out.println("number of runs: " + NUMBER_OF_RUNS);
                 }
-            }
-            finally {
+            } finally {
                 // Ignore any NumberFormatException and use default
             }
         }
@@ -246,16 +243,16 @@ public class TestOptions {
     public String getResultsFilename() {
         if (resultsFilename != null) {
             return resultsFilename;
-        }
-        else {
+        } else {
             return defaultResultsFilename;
         }
     }
 
-    /** Sets default results filename that will be used if no filename is passed through command line */
+    /**
+     * Sets default results filename that will be used if no filename is passed through command line
+     */
     public void setDefaultResultsFilename(String filename) {
         defaultResultsFilename = filename;
     }
 
 }
-

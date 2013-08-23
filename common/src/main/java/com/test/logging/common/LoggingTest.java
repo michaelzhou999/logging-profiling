@@ -6,7 +6,8 @@ import java.io.PrintStream;
 
 /**
  * The logging test launches multiple threads and executes logging statements
- * repeatedly within each single thread.
+ * repeatedly within each single thread. Time spent on execution will be
+ * recorded to the results file.
  * 
  * @author Michael.Zhou
  */
