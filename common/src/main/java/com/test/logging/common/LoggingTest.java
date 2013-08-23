@@ -84,6 +84,11 @@ public class LoggingTest<L> {
         }
     }
 
+    /** Warm up JVM */
+    protected void warmupJVM() {
+        oneRun(1, options.getNumberOfWarmups(), null);
+    }
+
     /** Main method to run a logging test . */
     public void run() {
         PrintStream output = null;
@@ -98,6 +103,9 @@ public class LoggingTest<L> {
         } else {
             System.err.println("No result summary file is specified.");
         }
+
+        // Warm up JVM to get more accurate reading on time spent
+        warmupJVM();
 
         for (int r = 0; r < options.getNumberOfRuns(); r++) {
             if (!options.isUseThreadSeries()) {

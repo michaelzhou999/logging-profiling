@@ -61,6 +61,9 @@ public class TestOptions {
     /** Indication of using thread series */
     protected boolean useThreadSeries;
 
+    /** Number of writes during warm-up. This could be set by command line. Fixed for now. */
+    protected int nWarmup = 500 * 1000;
+
     /** Default Filename of test results summary */
     protected String defaultResultsFilename;
     /** File name of test results summary */
@@ -237,6 +240,11 @@ public class TestOptions {
     /** Returns true if using thread series */
     public boolean isUseThreadSeries() {
         return useThreadSeries;
+    }
+
+    /** Returns the number of writes during warm-up */
+    public int getNumberOfWarmups() {
+        return nWarmup;
     }
 
     /** Returns results filename */

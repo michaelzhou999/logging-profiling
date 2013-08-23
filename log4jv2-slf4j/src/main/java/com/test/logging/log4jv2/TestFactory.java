@@ -14,12 +14,11 @@ import com.test.logging.common.TestScenarioOptions;
 public class TestFactory implements ITestScenarioFactory<Logger> {
 
     public static enum Type {
-        // TRACE_CHECKED_STRING("TRACE Level checked string literal (ms)"),
-        LITERAL("String literal (ms)"),
-        LEVEL_CHECKED_LITERAL("Level checked string literal (ms)"),
-        CONCAT_STRING("Level checked string concatenated via + (ms)"),
-        SLF4J_FORMATTED_STRING("Level checked string via SLF4J formatting (ms)"),
-        JAVA_FORMATTED_STRING("Level checked string via Java built-in formatting (ms)");
+        LITERAL("String literal"),
+        LEVEL_CHECKED_LITERAL("Level checked string literal"),
+        CONCAT_STRING("'+' concatenation"),
+        SLF4J_FORMATTED_STRING("SLF4J formatting"),
+        JAVA_FORMATTED_STRING("String.format");
 
         /** String representation of the factory type */
         private final String name;
@@ -48,8 +47,6 @@ public class TestFactory implements ITestScenarioFactory<Logger> {
     /** All unit works created by this factory share the same logger. */
     public TestScenario<Logger> createTestScenario(TestScenarioOptions options) {
         switch (this.type) {
-        // case TRACE_CHECKED_STRING:
-        // return new TraceCheckedLogging(logger);
         case LITERAL:
             return new LiteralLogging(logger, options);
         case LEVEL_CHECKED_LITERAL:
@@ -62,28 +59,6 @@ public class TestFactory implements ITestScenarioFactory<Logger> {
             return new JavaFormattedStringLogging(logger, options);
         default:
             throw new RuntimeException("Unsupported type of factory");
-        }
-    }
-
-}
-
-/**
- * TRACE logs a string literal wrapped within TRACE level check.
- * 
- * @author Michael.Zhou
- */
-class TraceCheckedLogging extends TestScenario<Logger> {
-
-    public TraceCheckedLogging(Logger logger, TestScenarioOptions options) {
-        super(logger, options);
-    }
-
-    @Override
-    public void run() {
-        for (int i = 0; i < options.getNumberOfRepeats(); i++) {
-            if (logger.isTraceEnabled()) {
-                logger.trace("Hello world from test log");
-            }
         }
     }
 
