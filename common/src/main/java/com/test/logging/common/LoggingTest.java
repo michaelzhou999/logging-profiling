@@ -48,7 +48,7 @@ public class LoggingTest<L> {
         System.out.println("");
         System.out.println("Running: " + description + " ... ");
         System.out.println("********************************************");
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         for (int i = 0; i < nThreads; i++) {
             threads[i].start();
         }
@@ -62,8 +62,8 @@ public class LoggingTest<L> {
             System.out.println("Thread is interrupted!");
             return;
         }
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime) / (1000 * 1000);
 
         System.out.println("Number of threads: " + nThreads);
         System.out.println("Number of repeats: " + nRepeats);
