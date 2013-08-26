@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
+import com.test.logging.common.TestFactoryType;
 import com.test.logging.common.TestOptions;
 
 /**
@@ -29,8 +30,8 @@ public class Profiler extends BaseProfiler {
         // File appender
         Logger logger = LoggerFactory.getLogger(Profiler.class);
         // Iterate through all unit work types and execute test scenarios
-        TestFactory.Type[] allTypes = TestFactory.Type.class.getEnumConstants();
-        for (TestFactory.Type t : allTypes) {
+        TestFactoryType[] allTypes = TestFactory.getSupportedTypes();
+        for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString(), new TestFactory(t, logger), opts).run();
         }
     }

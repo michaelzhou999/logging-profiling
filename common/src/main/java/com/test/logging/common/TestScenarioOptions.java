@@ -7,7 +7,7 @@ package com.test.logging.common;
  */
 public class TestScenarioOptions {
 
-    /** Number of repeats. For now, this is the only option. */
+    /** Number of repeats */
     private int nRepeats;
 
     public TestScenarioOptions(int nRepeats) {
@@ -17,4 +17,5 @@ public class TestScenarioOptions {
     public int getNumberOfRepeats() {
         return nRepeats;
     }
+
 }

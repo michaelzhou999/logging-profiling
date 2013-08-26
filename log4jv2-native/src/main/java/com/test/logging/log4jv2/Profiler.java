@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
+import com.test.logging.common.TestFactoryType;
 import com.test.logging.common.TestOptions;
 
 /**
@@ -26,12 +27,13 @@ public class Profiler extends BaseProfiler {
             return;
         }
 
+        TestFactoryType[] allTypes = TestFactory.getSupportedTypes();
+
         // File appender
         Logger logger = LogManager.getLogger("SyncFileLogger");
         // Iterate through all unit work types and execute test scenarios
         System.out.println("(((((((((((((   SLOW FILE LOGGER ))))))))))))))))");
-        TestFactory.Type[] allTypes = TestFactory.Type.class.getEnumConstants();
-        for (TestFactory.Type t : allTypes) {
+        for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-FileAppender", new TestFactory(t, logger), opts).run();
         }
 
@@ -39,7 +41,7 @@ public class Profiler extends BaseProfiler {
         Logger fastLogger = LogManager.getLogger("SyncFastFileLogger");
         // Iterate through all unit work types and execute test scenarios
         System.out.println("(((((((((((((   FAST FILE LOGGER ))))))))))))))))");
-        for (TestFactory.Type t : allTypes) {
+        for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-FastFileAppender", new TestFactory(t, fastLogger), opts).run();
         }
 
@@ -47,7 +49,7 @@ public class Profiler extends BaseProfiler {
         Logger asyncLogger = LogManager.getLogger("AsyncFastFileLogger");
         // Iterate through all unit work types and execute test scenarios
         System.out.println("(((((((((((((   ASYNC FAST FILE LOGGER ))))))))))))))))");
-        for (TestFactory.Type t : allTypes) {
+        for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-AsyncFastFileLogger", new TestFactory(t, asyncLogger), opts).run();
         }
         // Wait for 20 seconds for I/O to catch up and closing of async

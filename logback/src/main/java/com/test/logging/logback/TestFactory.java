@@ -3,6 +3,7 @@ package com.test.logging.logback;
 import org.slf4j.Logger;
 
 import com.test.logging.common.ITestScenarioFactory;
+import com.test.logging.common.TestFactoryType;
 import com.test.logging.common.TestScenario;
 import com.test.logging.common.TestScenarioOptions;
 
@@ -13,35 +14,24 @@ import com.test.logging.common.TestScenarioOptions;
  */
 public class TestFactory implements ITestScenarioFactory<Logger> {
 
-    public static enum Type {
-        LITERAL("String literal"),
-        LEVEL_CHECKED_LITERAL("Level checked string literal"),
-        CONCAT_STRING("'+' concatenation"),
-        SLF4J_FORMATTED_STRING("SLF4J formatting"),
-        JAVA_FORMATTED_STRING("String.format");
-
-        /** String representation of the factory type */
-        private final String name;
-
-        private Type(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-    }
+    /** Supported types */
+    private static final TestFactoryType[] types = new TestFactoryType[] { TestFactoryType.LITERAL,
+            TestFactoryType.LEVEL_CHECKED_LITERAL, TestFactoryType.CONCAT_STRING,
+            TestFactoryType.SLF4J_FORMATTED_STRING, TestFactoryType.JAVA_FORMATTED_STRING };
 
     /** Type of factory */
-    private Type type;
+    private TestFactoryType type;
 
     /** Logger */
     private Logger logger;
 
-    public TestFactory(Type type, Logger logger) {
+    public TestFactory(TestFactoryType type, Logger logger) {
         this.type = type;
         this.logger = logger;
+    }
+
+    public static TestFactoryType[] getSupportedTypes() {
+        return types;
     }
 
     /** All unit works created by this factory share the same logger. */

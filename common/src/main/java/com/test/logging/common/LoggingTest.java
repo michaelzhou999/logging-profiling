@@ -84,7 +84,7 @@ public class LoggingTest<L> {
         }
     }
 
-    /** Warm up JVM */
+    /** Warm up JVM with 1 thread. */
     protected void warmupJVM() {
         oneRun(1, options.getNumberOfWarmups(), null);
     }
