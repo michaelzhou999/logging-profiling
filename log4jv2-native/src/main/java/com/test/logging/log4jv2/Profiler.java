@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
-import com.test.logging.common.TestFactoryType;
 import com.test.logging.common.ProfilerOptions;
+import com.test.logging.common.TestFactoryType;
 
 /**
  * Profiling LOG4J version 2 via Native API
@@ -29,31 +29,30 @@ public class Profiler extends BaseProfiler {
 
         TestFactoryType[] allTypes = TestFactory.getSupportedTypes();
 
-        // File appender
+        // Synchronous file logger
+        System.out.println("(((((((((((((   SYNC FILE LOGGER ))))))))))))))))");
         Logger logger = LogManager.getLogger("SyncFileLogger");
         // Iterate through all unit work types and execute test scenarios
-        System.out.println("(((((((((((((   SLOW FILE LOGGER ))))))))))))))))");
         for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-FileAppender", new TestFactory(t, logger), opts).run();
         }
 
-        // Fast file appender
+        // Synchronous fast file logger
+        System.out.println("(((((((((((((   SYNC FAST FILE LOGGER ))))))))))))))))");
         Logger fastLogger = LogManager.getLogger("SyncFastFileLogger");
         // Iterate through all unit work types and execute test scenarios
-        System.out.println("(((((((((((((   FAST FILE LOGGER ))))))))))))))))");
         for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-FastFileAppender", new TestFactory(t, fastLogger), opts).run();
         }
 
-        // Async logger
+        // Asynchronous fast file logger
+        System.out.println("(((((((((((((   ASYNC FAST FILE LOGGER ))))))))))))))))");
         Logger asyncLogger = LogManager.getLogger("AsyncFastFileLogger");
         // Iterate through all unit work types and execute test scenarios
-        System.out.println("(((((((((((((   ASYNC FAST FILE LOGGER ))))))))))))))))");
         for (TestFactoryType t : allTypes) {
             new LoggingTest<Logger>(t.toString() + "-AsyncFastFileLogger", new TestFactory(t, asyncLogger), opts).run();
         }
-        // Wait for 20 seconds for I/O to catch up and closing of async
-        // appenders
+        // Wait for 20 seconds for I/O to catch up and closing of async appenders
         System.out.println("Waiting for 20 seconds for I/O to catch up and proper closing of async appenders.");
         Thread.sleep(20000);
     }

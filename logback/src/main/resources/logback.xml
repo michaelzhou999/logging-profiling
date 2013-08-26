@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>logback.out</file>
+    <file>logback-file.out</file>
     <append>true</append>
     <encoder>
       <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
     </encoder>
   </appender>
-        
-  <root level="DEBUG">
+  <appender name="ASYNCFILE" class="ch.qos.logback.core.FileAppender">
+    <file>logback-async.out</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <discardingThreshold>0</discardingThreshold>
+    <appender-ref ref="ASYNCFILE" />
+  </appender>
+
+  <logger name="SyncFileLogger" level="DEBUG">
     <appender-ref ref="FILE" />
-  </root>
+  </logger>
+  <logger name="AsyncFileLogger" level="DEBUG">
+    <appender-ref ref="ASYNC" />
+  </logger>
+
 </configuration>
