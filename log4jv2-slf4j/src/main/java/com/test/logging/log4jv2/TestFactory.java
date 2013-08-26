@@ -2,7 +2,7 @@ package com.test.logging.log4jv2;
 
 import org.slf4j.Logger;
 
-import com.test.logging.common.ITestScenarioFactory;
+import com.test.logging.common.BaseTestScenarioFactory;
 import com.test.logging.common.TestFactoryType;
 import com.test.logging.common.TestScenario;
 import com.test.logging.common.TestScenarioOptions;
@@ -12,7 +12,7 @@ import com.test.logging.common.TestScenarioOptions;
  * 
  * @author Michael.Zhou
  */
-public class TestFactory implements ITestScenarioFactory<Logger> {
+public class TestFactory extends BaseTestScenarioFactory<Logger> {
 
     /** Supported types */
     private static final TestFactoryType[] types = new TestFactoryType[] { TestFactoryType.LITERAL,
@@ -68,7 +68,7 @@ class LiteralLogging extends TestScenario<Logger> {
     @Override
     public void run() {
         for (int i = 0; i < options.getNumberOfRepeats(); i++) {
-            logger.info("Hello world from test log");
+            logger.info(TestFactory.LOG_MSG);
         }
     }
 
@@ -89,7 +89,7 @@ class LevelCheckedLogging extends TestScenario<Logger> {
     public void run() {
         for (int i = 0; i < options.getNumberOfRepeats(); i++) {
             if (logger.isInfoEnabled()) {
-                logger.info("Hello world from test log");
+                logger.info(TestFactory.LOG_MSG);
             }
         }
     }
@@ -109,11 +109,12 @@ class ConcatStringLogging extends TestScenario<Logger> {
 
     @Override
     public void run() {
-        String world = "world";
-        String testLog = "test log";
+        String varPart1 = TestFactory.VARIABLE_STRING_PART_1;
+        String varPart2 = TestFactory.VARIABLE_STRING_PART_2;
         for (int i = 0; i < options.getNumberOfRepeats(); i++) {
             if (logger.isInfoEnabled()) {
-                logger.info("Hello " + world + " from " + testLog);
+                logger.info(TestFactory.FIXED_STRING_PART_1 + varPart1 + TestFactory.FIXED_STRING_PART_2 + varPart2
+                        + TestFactory.FIXED_STRING_PART_3);
             }
         }
     }
@@ -133,11 +134,11 @@ class FormattedStringLogging extends TestScenario<Logger> {
 
     @Override
     public void run() {
-        String world = "world";
-        String testLog = "test log";
+        String varPart1 = TestFactory.VARIABLE_STRING_PART_1;
+        String varPart2 = TestFactory.VARIABLE_STRING_PART_2;
         for (int i = 0; i < options.getNumberOfRepeats(); i++) {
             if (logger.isInfoEnabled()) {
-                logger.info("Hello {} from {}", world, testLog);
+                logger.info(TestFactory.SLF4J_STRING_FORMAT, varPart1, varPart2);
             }
         }
     }
@@ -157,11 +158,11 @@ class JavaFormattedStringLogging extends TestScenario<Logger> {
 
     @Override
     public void run() {
-        String world = "world";
-        String testLog = "test log";
+        String varPart1 = TestFactory.VARIABLE_STRING_PART_1;
+        String varPart2 = TestFactory.VARIABLE_STRING_PART_2;
         for (int i = 0; i < options.getNumberOfRepeats(); i++) {
             if (logger.isInfoEnabled()) {
-                logger.info(String.format("Hello %s from %s", world, testLog));
+                logger.info(String.format(TestFactory.JAVA_STRING_FORMAT, varPart1, varPart2));
             }
         }
     }

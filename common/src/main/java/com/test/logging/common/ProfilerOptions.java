@@ -243,7 +243,7 @@ public class ProfilerOptions {
     }
 
     /** Returns the number of writes during warm-up */
-    public int getNumberOfWarmups() {
+    public int getNumberOfWarmupWrites() {
         return nWarmup;
     }
 

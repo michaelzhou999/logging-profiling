@@ -16,12 +16,12 @@ public class LoggingTest<L> {
     protected String description;
 
     /** Factory to create units of logging test work */
-    protected ITestScenarioFactory<L> testFactory;
+    protected BaseTestScenarioFactory<L> testFactory;
 
     /** Logging test options */
     protected ProfilerOptions options;
 
-    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, ProfilerOptions options) {
+    public LoggingTest(String description, BaseTestScenarioFactory<L> testFactory, ProfilerOptions options) {
         this.description = description;
         this.options = options;
         this.testFactory = testFactory;
@@ -88,11 +88,6 @@ public class LoggingTest<L> {
         }
     }
 
-    /** Warm up JVM with 1 thread. */
-    protected void warmupJVM() {
-        oneRun(1, options.getNumberOfWarmups(), null, true);
-    }
-
     /** Main method to run a logging test . */
     public void run() {
         PrintStream output = null;
@@ -109,7 +104,7 @@ public class LoggingTest<L> {
         }
 
         // Warm up JVM to get more accurate reading on time spent
-        warmupJVM();
+        oneRun(1, options.getNumberOfWarmupWrites(), null, true);
 
         for (int r = 0; r < options.getNumberOfRuns(); r++) {
             if (!options.isUseThreadSeries()) {
