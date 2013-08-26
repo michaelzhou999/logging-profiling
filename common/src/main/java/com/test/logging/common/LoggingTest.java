@@ -105,6 +105,13 @@ public class LoggingTest<L> {
 
         // Warm up JVM to get more accurate reading on time spent
         oneRun(1, options.getNumberOfWarmupWrites(), null, true);
+        try {
+            System.out.println("Waiting for " + options.getWaitAfterWarmup() / 1000 + " seconds before profiling...");
+            Thread.sleep(options.getWaitAfterWarmup());
+        } catch (InterruptedException ie) {
+            System.err.println("Thread interrupted. Exiting.");
+            System.exit(1);
+        }
 
         for (int r = 0; r < options.getNumberOfRuns(); r++) {
             if (!options.isUseThreadSeries()) {

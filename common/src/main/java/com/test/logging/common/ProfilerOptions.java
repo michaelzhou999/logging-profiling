@@ -62,7 +62,12 @@ public class ProfilerOptions {
     protected boolean useThreadSeries;
 
     /** Number of writes during warm-up. This could be set by command line. Fixed for now. */
-    protected int nWarmup = 500 * 1000;
+    protected int nWarmUpWrites = 5000 * 1000;
+    /**
+     * Wait, in millis, after warm-up. This is for I/O thread to catch up and buffers to drain in case of asynchronous
+     * logging.
+     */
+    protected long waitAfterWarmup = 10 * 1000;
 
     /** Default Filename of test results summary */
     protected String defaultResultsFilename;
@@ -163,6 +168,7 @@ public class ProfilerOptions {
                     if (MIN_NUMBER_OF_THREADS <= nThread && nThread <= MAX_NUMBER_OF_THREADS) {
                         NUMBER_OF_THREADS = nThread;
                     }
+                    System.out.println("number of threads: " + NUMBER_OF_THREADS);
                 } finally {
                     // Ignore any NumberFormatException and use default
                 }
@@ -174,6 +180,7 @@ public class ProfilerOptions {
                     if (MIN_NUMBER_OF_REPEATS <= nRepeat && nRepeat <= MAX_NUMBER_OF_REPEATS) {
                         NUMBER_OF_REPEATS = nRepeat;
                     }
+                    System.out.println("number of repeats: " + NUMBER_OF_REPEATS);
                 } finally {
                     // Ignore any NumberFormatException and use default
                 }
@@ -185,8 +192,8 @@ public class ProfilerOptions {
                 if (MIN_NUMBER_OF_WRITES <= nWrites && nWrites <= MAX_NUMBER_OF_WRITES) {
                     // Round the number of writes to nearest 1000
                     NUMBER_OF_WRITES = nWrites / 1000 * 1000;
-                    System.out.println("number of writes: " + NUMBER_OF_WRITES);
                 }
+                System.out.println("number of writes: " + NUMBER_OF_WRITES);
             } finally {
                 // Ignore any NumberFormatException and use default
             }
@@ -197,8 +204,8 @@ public class ProfilerOptions {
                 Integer nRun = Integer.valueOf(line.getOptionValue(ARG_RUN));
                 if (MIN_NUMBER_OF_RUNS <= nRun && nRun <= MAX_NUMBER_OF_RUNS) {
                     NUMBER_OF_RUNS = nRun;
-                    System.out.println("number of runs: " + NUMBER_OF_RUNS);
                 }
+                System.out.println("number of runs: " + NUMBER_OF_RUNS);
             } finally {
                 // Ignore any NumberFormatException and use default
             }
@@ -244,7 +251,12 @@ public class ProfilerOptions {
 
     /** Returns the number of writes during warm-up */
     public int getNumberOfWarmupWrites() {
-        return nWarmup;
+        return nWarmUpWrites;
+    }
+
+    /** Returns the time in millis to wait after warm-up */
+    public long getWaitAfterWarmup() {
+        return waitAfterWarmup;
     }
 
     /** Returns results filename */
