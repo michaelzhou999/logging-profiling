@@ -19,9 +19,9 @@ public class LoggingTest<L> {
     protected ITestScenarioFactory<L> testFactory;
 
     /** Logging test options */
-    protected TestOptions options;
+    protected ProfilerOptions options;
 
-    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, TestOptions options) {
+    public LoggingTest(String description, ITestScenarioFactory<L> testFactory, ProfilerOptions options) {
         this.description = description;
         this.options = options;
         this.testFactory = testFactory;
@@ -47,7 +47,6 @@ public class LoggingTest<L> {
 
         System.out.println("");
         System.out.println("Running: " + description + " ... ");
-        System.out.println("********************************************");
         long startTime = System.nanoTime();
         for (int i = 0; i < nThreads; i++) {
             threads[i].start();

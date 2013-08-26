@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
 import com.test.logging.common.TestFactoryType;
-import com.test.logging.common.TestOptions;
+import com.test.logging.common.ProfilerOptions;
 
 /**
  * Profiling LOG4J version 1 via Native API
@@ -20,7 +20,7 @@ public class Profiler extends BaseProfiler {
     public static void main(String[] args) throws InterruptedException {
         printBanner();
 
-        TestOptions opts = getTestOptions();
+        ProfilerOptions opts = getTestOptions();
         opts.setDefaultResultsFilename("log4jv1-native.csv");
         if (!opts.parseCliOptions(getAppName(), args)) {
             return;

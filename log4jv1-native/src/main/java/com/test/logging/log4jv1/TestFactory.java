@@ -118,7 +118,7 @@ class ConcatStringLogging extends TestScenario<Logger> {
 }
 
 /**
- * Logs a string via Java built-in formatting wrapped within level check.
+ * Logs a string via String.format wrapped within level check.
  * 
  * @author Michael.Zhou
  */
