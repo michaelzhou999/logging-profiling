@@ -15,15 +15,15 @@ import com.test.logging.common.ProfilerOptions;
  */
 public class Profiler extends BaseProfiler {
     static {
-        setAppName("log4j v2 (via slf4j) profiler");
+        setProfilerName("log4j v2 (via slf4j) profiler");
     }
 
     public static void main(String[] args) throws InterruptedException {
         printBanner();
 
-        ProfilerOptions opts = getTestOptions();
+        ProfilerOptions opts = getProfilerOptions();
         opts.setDefaultResultsFilename("log4jv2-slf4j.csv");
-        if (!opts.parseCliOptions(getAppName(), args)) {
+        if (!opts.parseCliOptions(getProfilerName(), args)) {
             return;
         }
 

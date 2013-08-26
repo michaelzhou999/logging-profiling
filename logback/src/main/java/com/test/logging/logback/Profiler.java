@@ -15,15 +15,15 @@ import com.test.logging.common.ProfilerOptions;
  */
 public class Profiler extends BaseProfiler {
     static {
-        setAppName("logback profiler");
+        setProfilerName("logback profiler");
     }
 
     public static void main(String[] args) throws InterruptedException {
         printBanner();
 
-        ProfilerOptions opts = getTestOptions();
+        ProfilerOptions opts = getProfilerOptions();
         opts.setDefaultResultsFilename("logback.csv");
-        if (!opts.parseCliOptions(getAppName(), args)) {
+        if (!opts.parseCliOptions(getProfilerName(), args)) {
             return;
         }
 

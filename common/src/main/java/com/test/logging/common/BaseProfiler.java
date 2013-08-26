@@ -10,29 +10,29 @@ public class BaseProfiler {
     protected static ProfilerOptions opts = new ProfilerOptions();
 
     /** Application name */
-    protected static String APPNAME = "logging profiler (please set to a specific name)";
+    protected static String PROFILER_NAME = "logging profiler (please set to a specific name)";
 
     /** Print banner of test being run */
     public static void printBanner() {
         System.out.println("");
         System.out.println("################################################################");
-        System.out.println("   Starting " + APPNAME + " ...");
+        System.out.println("   Starting " + PROFILER_NAME + " ...");
         System.out.println("################################################################");
         System.out.println("");
     }
 
-    /** Set application name */
-    public static void setAppName(String appName) {
-        APPNAME = appName;
+    /** Set profiler name */
+    public static void setProfilerName(String profilerName) {
+        PROFILER_NAME = profilerName;
     }
 
-    /** Return application name */
-    public static String getAppName() {
-        return APPNAME;
+    /** Return profiler name */
+    public static String getProfilerName() {
+        return PROFILER_NAME;
     }
 
     /** Return test options */
-    public static ProfilerOptions getTestOptions() {
+    public static ProfilerOptions getProfilerOptions() {
         return opts;
     }
 }
