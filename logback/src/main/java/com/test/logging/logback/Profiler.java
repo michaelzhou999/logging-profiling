@@ -32,12 +32,12 @@ public class Profiler extends BaseProfiler {
         TestFactoryType[] allTypes = TestFactory.getSupportedTypes();
 
         // Synchronous file logger
-        // System.out.println("(((((((((((((   SYNC FILE LOGGER ))))))))))))))))");
-        // Logger logger = LoggerFactory.getLogger("SyncFileLogger");
-        // // Iterate through all unit work types and execute test scenarios
-        // for (TestFactoryType t : allTypes) {
-        // new LoggingTest<Logger>(t.toString() + "-Sync", new TestFactory(t, logger), opts).run();
-        // }
+        System.out.println("(((((((((((((   SYNC FILE LOGGER ))))))))))))))))");
+        Logger logger = LoggerFactory.getLogger("SyncFileLogger");
+        // Iterate through all unit work types and execute test scenarios
+        for (TestFactoryType t : allTypes) {
+            new LoggingTest<Logger>(t.toString() + "-Sync", new TestFactory(t, logger), opts).run();
+        }
 
         // Async file logger
         System.out.println("(((((((((((((   ASYNC FILE LOGGER ))))))))))))))))");
@@ -54,5 +54,4 @@ public class Profiler extends BaseProfiler {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.stop();
     }
-
 }
