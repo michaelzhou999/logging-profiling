@@ -33,8 +33,9 @@ public class LoggingTest<L> {
      * @param nThreads number of threads that concurrently log
      * @param nRepeats number of times to call logging in a thread
      * @param output where to write results
+     * @param warmUp true if this run is a warmup
      */
-    public void oneRun(final int nThreads, final int nRepeats, final PrintStream output) {
+    public void oneRun(final int nThreads, final int nRepeats, final PrintStream output, boolean warmUp) {
         Thread[] threads = new Thread[nThreads];
         for (int i = 0; i < nThreads; i++) {
             final TestScenario<L> unitWork = testFactory.createTestScenario(new TestScenarioOptions(nRepeats));
@@ -46,7 +47,11 @@ public class LoggingTest<L> {
         }
 
         System.out.println("");
-        System.out.println("Running: " + description + " ... ");
+        if (warmUp) {
+            System.out.println("Warming up JVM for: " + description + " ... ");
+        } else {
+            System.out.println("Running: " + description + " ... ");
+        }
         long startTime = System.nanoTime();
         for (int i = 0; i < nThreads; i++) {
             threads[i].start();
@@ -85,7 +90,7 @@ public class LoggingTest<L> {
 
     /** Warm up JVM with 1 thread. */
     protected void warmupJVM() {
-        oneRun(1, options.getNumberOfWarmups(), null);
+        oneRun(1, options.getNumberOfWarmups(), null, true);
     }
 
     /** Main method to run a logging test . */
@@ -108,13 +113,13 @@ public class LoggingTest<L> {
 
         for (int r = 0; r < options.getNumberOfRuns(); r++) {
             if (!options.isUseThreadSeries()) {
-                oneRun(options.getNumberOfThreads(), options.getNumberOfRepeats(), output);
+                oneRun(options.getNumberOfThreads(), options.getNumberOfRepeats(), output, false);
             } else {
                 final int[] ts = options.getThreadSeries();
                 for (int tsi = 0; tsi < ts.length; tsi++) {
                     final int nThreads = ts[tsi];
                     final int nRepeats = options.getNumberOfWrites() / nThreads;
-                    oneRun(nThreads, nRepeats, output);
+                    oneRun(nThreads, nRepeats, output, false);
                 }
             }
         }
