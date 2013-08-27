@@ -4,7 +4,7 @@ logging-profiling
 Purpose
 -------
 
-The purpose of creating this project was to test and compare performance
+The purpose of creating this project was to micro-benchmark and compare performance
 characteristics (mainly speed) of frequently used Java logging frameworks,
 which for the time being include,
 - **Log4j version 1**
@@ -19,7 +19,7 @@ The permutations of testing revolve around these dimensions:
 - number of repeating logs within a thread
 - different ways of formatting log messages
 - choice of logging frameworks
-- access methods, e.g., SLF4J facade vs native API
+- access APIs, e.g., SLF4J facade vs native API
 
 Goals
 -----
@@ -49,12 +49,15 @@ be self-explanatary:
 - Project "log4jv2-slf4j" tests LOG4J version 2 via SLF4J API
 - Project "logback" tests Logback via SLF4J API
 
+Log level is set to DEBUG across the board and INFO is used to log actual
+messages.
+
 Dependencies
 ------------
 
 The projects require JDK v1.6+ and Maven 2.0.6+.
 
-In addition, they are dependent upon these Maven plugins for build:
+In addition, they are dependent upon the following Maven plugins for build:
 - Exec (http://mojo.codehaus.org/exec-maven-plugin/)
 - Enforcer (http://maven.apache.org/enforcer/maven-enforcer-plugin/)
 
@@ -112,7 +115,7 @@ or in the long format
 
 Instead of specifying threads and repeats, the test can also be run by specifying
 a single parameter: the number of writes for each particular test. A preset
-series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 200.
+series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 100.
 
     mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -w <number_of_writes>"
 

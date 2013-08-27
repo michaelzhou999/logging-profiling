@@ -57,7 +57,7 @@ public class ProfilerOptions {
     protected int NUMBER_OF_RUNS = DEFAULT_NUMBER_OF_RUNS;
 
     /** Thread series for each test run, used with --write option */
-    protected int[] THREAD_SERIES = new int[] { 1, 2, 5, 10, 20, 50, 100, 200 };
+    protected int[] THREAD_SERIES = new int[] { 1, 2, 5, 10, 20, 50, 100 };
     /** Indication of using thread series */
     protected boolean useThreadSeries;
 
