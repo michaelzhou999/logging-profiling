@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="debug" name="Log4j_v2_Profiler">
+<configuration status="warn" name="Log4j_v2_Profiler">
   <appenders>
     <File name="FILE" fileName="log4jv2-file.out" append="true">
       <PatternLayout>
