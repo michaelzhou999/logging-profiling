@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import com.test.logging.common.BaseProfiler;
 import com.test.logging.common.LoggingTest;
-import com.test.logging.common.TestFactoryType;
 import com.test.logging.common.ProfilerOptions;
+import com.test.logging.common.TestFactoryType;
 
 /**
  * Profiling LOG4J version 1 via Native API
@@ -21,7 +21,6 @@ public class Profiler extends BaseProfiler {
         printBanner();
 
         ProfilerOptions opts = getProfilerOptions();
-        opts.setDefaultResultsFilename("log4jv1-native.csv");
         if (!opts.parseCliOptions(getProfilerName(), args)) {
             return;
         }

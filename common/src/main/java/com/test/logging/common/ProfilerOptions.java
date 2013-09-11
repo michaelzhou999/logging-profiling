@@ -1,5 +1,7 @@
 package com.test.logging.common;
 
+import java.util.Properties;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -15,6 +17,12 @@ import org.apache.commons.cli.PosixParser;
  * @author Michael.Zhou
  */
 public class ProfilerOptions {
+
+    /** Names of options, using CamelCase naming convention. */
+    private static final String OPTION_USE_THREAD_SERIES = "UseThreadSeries";
+    private static final String OPTION_NUMBER_OF_TOTAL_LOGS = "NumberOfTotalLogs";
+    private static final String OPTION_NUMBER_OF_THREADS = "NumberOfThreads";
+    private static final String OPTION_NUMBER_OF_LOGS_PER_THREADS = "NumberOfLogsPerThread";
 
     /**
      * Maximum number of times logging statements should be executed in a thread
@@ -59,7 +67,7 @@ public class ProfilerOptions {
     /** Thread series for each test run, used with --write option */
     protected int[] THREAD_SERIES = new int[] { 1, 2, 5, 10, 20, 50, 100 };
     /** Indication of using thread series */
-    protected boolean useThreadSeries;
+    protected boolean useThreadSeries = true;
 
     /** Number of writes during warm-up. This could be set by command line. Fixed for now. */
     protected int nWarmUpWrites = 5000 * 1000;
@@ -70,12 +78,17 @@ public class ProfilerOptions {
     protected long waitAfterWarmup = 10 * 1000;
 
     /** Default Filename of test results summary */
-    protected String defaultResultsFilename;
+    protected String defaultResultsFilename = "results.csv";
     /** File name of test results summary */
     protected String resultsFilename;
 
     /** Command line options backed by Apache Commons CLI library */
     protected Options options = new Options();
+
+    /** Properties for profiler options */
+    private static final String DEFAULT_PROPS_FILENAME = "test.properties";
+    private final String propsFilename = DEFAULT_PROPS_FILENAME;
+    private final Properties props = new Properties();
 
     /** CLI arguments */
     private static final String ARG_HELP = "help";
@@ -85,8 +98,68 @@ public class ProfilerOptions {
     private static final String ARG_RUN = "run";
     private static final String ARG_FILENAME = "filename";
 
-    public ProfilerOptions() {
+    /** Name of the profiler */
+    private String profilerName = "Logging profiler";
+
+    public ProfilerOptions(String profilerName) {
+        this(profilerName, DEFAULT_PROPS_FILENAME);
+    }
+
+    /**
+     * Constructor to load profiler options from properties file.
+     * 
+     * @param filename Properties filename
+     */
+    public ProfilerOptions(String profilerName, String filename) {
+        this.profilerName = profilerName;
+        parseOptions(filename);
+    }
+
+    public String getProfilerName() {
+        return this.profilerName;
+    }
+
+    /**
+     * Parse profiler options in properties file. Invalid options will be ignored and default settings will be used.
+     * 
+     * @param propsFilename Properties filename
+     * 
+     * @return true if execution should continue; false if command line options indicate printing the help message.
+     */
+    private void parseOptions(String propsFilename) {
+        // try {
+        // // Load properties file
+        // props.load(new FileInputStream(propsFilename));
+        //
+        // if (props.containsKey(OPTION_USE_THREAD_SERIES)) {
+        // try {
+        // props.getProperty(OPTION_USE_THREAD_SERIES, "true");
+        // if (MIN_NUMBER_OF_THREADS <= nThread && nThread <= MAX_NUMBER_OF_THREADS) {
+        // NUMBER_OF_THREADS = nThread;
+        // }
+        // System.out.println("number of threads: " + NUMBER_OF_THREADS);
+        // } finally {
+        // // Ignore any NumberFormatException and use default
+        // }
+        // }
+        //
+        // private static final String OPTION_NUMBER_OF_TOTAL_LOGS = "NumberOfTotalLogs";
+        // private static final String OPTION_NUMBER_OF_THREADS = "NumberOfThreads";
+        // private static final String OPTION_NUMBER_OF_LOGS_PER_THREADS = "NumberOfLogsPerThread";
+        // } catch (IOException ex) {
+        // System.err.println("Could not open file: " + propsFilename + ", using defaults.");
+        // }
+    }
+
+    /** Prints usage */
+    public void printUsage(String appName) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(appName, options);
+    }
+
+    public void buildCliOptions() {
         // Build command line options
+
         Option help = new Option("h", ARG_HELP, false, "usage");
         options.addOption(help);
 
@@ -123,12 +196,6 @@ public class ProfilerOptions {
                 .withDescription("filename of results summary").create("f");
         filename.setLongOpt(ARG_FILENAME);
         options.addOption(filename);
-    }
-
-    /** Prints usage */
-    public void printUsage(String appName) {
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(appName, options);
     }
 
     /**
@@ -234,6 +301,12 @@ public class ProfilerOptions {
         return NUMBER_OF_WRITES;
     }
 
+    /** Sets the number of writes */
+    public void setNumberOfWrites(int writes) {
+        NUMBER_OF_WRITES = writes;
+
+    }
+
     /** Returns the number of runs in each single run */
     public int getNumberOfRuns() {
         return NUMBER_OF_RUNS;
@@ -247,6 +320,11 @@ public class ProfilerOptions {
     /** Returns true if using thread series */
     public boolean isUseThreadSeries() {
         return useThreadSeries;
+    }
+
+    /** Sets flag to use thread series */
+    public void setUseThreadSeries(boolean useThreadSeries) {
+        this.useThreadSeries = useThreadSeries;
     }
 
     /** Returns the number of writes during warm-up */

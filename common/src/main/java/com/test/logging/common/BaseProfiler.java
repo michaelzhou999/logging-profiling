@@ -6,11 +6,11 @@ package com.test.logging.common;
  * @author Michael.Zhou
  */
 public class BaseProfiler {
-    /** Options for running the profiler */
-    protected static ProfilerOptions opts = new ProfilerOptions();
-
     /** Application name */
     protected static String PROFILER_NAME = "logging profiler (please set to a specific name)";
+
+    /** Options for running the profiler */
+    protected static ProfilerOptions opts = new ProfilerOptions(PROFILER_NAME);
 
     /** Print banner of test being run */
     public static void printBanner() {
