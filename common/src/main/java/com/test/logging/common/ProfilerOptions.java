@@ -1,5 +1,7 @@
 package com.test.logging.common;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
@@ -87,8 +89,8 @@ public class ProfilerOptions {
 
     /** Properties for profiler options */
     private static final String DEFAULT_PROPS_FILENAME = "test.properties";
-    private final String propsFilename = DEFAULT_PROPS_FILENAME;
-    private final Properties props = new Properties();
+    private String propsFilename = DEFAULT_PROPS_FILENAME;
+    private Properties props = new Properties();
 
     /** CLI arguments */
     private static final String ARG_HELP = "help";
@@ -101,6 +103,11 @@ public class ProfilerOptions {
     /** Name of the profiler */
     private String profilerName = "Logging profiler";
 
+    /**
+     * Constructor to load profiler options from default properties file.
+     * 
+     * @param profilerName Name of the profiler
+     */
     public ProfilerOptions(String profilerName) {
         this(profilerName, DEFAULT_PROPS_FILENAME);
     }
@@ -108,11 +115,15 @@ public class ProfilerOptions {
     /**
      * Constructor to load profiler options from properties file.
      * 
-     * @param filename Properties filename
+     * @param profilerName Name of the profiler
+     * @param propsFilename Properties filename
      */
-    public ProfilerOptions(String profilerName, String filename) {
-        this.profilerName = profilerName;
-        parseOptions(filename);
+    public ProfilerOptions(String profilerName, String propsFilename) {
+        if (profilerName != null) {
+            this.profilerName = profilerName;
+        }
+        this.propsFilename = propsFilename;
+        parseOptions();
     }
 
     public String getProfilerName() {
@@ -122,33 +133,41 @@ public class ProfilerOptions {
     /**
      * Parse profiler options in properties file. Invalid options will be ignored and default settings will be used.
      * 
-     * @param propsFilename Properties filename
-     * 
      * @return true if execution should continue; false if command line options indicate printing the help message.
      */
-    private void parseOptions(String propsFilename) {
-        // try {
-        // // Load properties file
-        // props.load(new FileInputStream(propsFilename));
-        //
-        // if (props.containsKey(OPTION_USE_THREAD_SERIES)) {
-        // try {
-        // props.getProperty(OPTION_USE_THREAD_SERIES, "true");
-        // if (MIN_NUMBER_OF_THREADS <= nThread && nThread <= MAX_NUMBER_OF_THREADS) {
-        // NUMBER_OF_THREADS = nThread;
-        // }
-        // System.out.println("number of threads: " + NUMBER_OF_THREADS);
-        // } finally {
-        // // Ignore any NumberFormatException and use default
-        // }
-        // }
-        //
-        // private static final String OPTION_NUMBER_OF_TOTAL_LOGS = "NumberOfTotalLogs";
-        // private static final String OPTION_NUMBER_OF_THREADS = "NumberOfThreads";
-        // private static final String OPTION_NUMBER_OF_LOGS_PER_THREADS = "NumberOfLogsPerThread";
-        // } catch (IOException ex) {
-        // System.err.println("Could not open file: " + propsFilename + ", using defaults.");
-        // }
+    private void parseOptions() {
+        try {
+            // Load properties file
+            InputStream propFileStream = this.getClass().getClassLoader().getResourceAsStream(this.propsFilename);
+            props.load(propFileStream);
+
+            useThreadSeries = Boolean.valueOf(props.getProperty(OPTION_USE_THREAD_SERIES, "true").trim());
+            NUMBER_OF_WRITES = Integer.valueOf(props.getProperty(OPTION_NUMBER_OF_TOTAL_LOGS,
+                    Integer.toString(DEFAULT_NUMBER_OF_WRITES)).trim());
+            NUMBER_OF_THREADS = Integer.valueOf(props.getProperty(OPTION_NUMBER_OF_THREADS,
+                    Integer.toString(DEFAULT_NUMBER_OF_THREADS)).trim());
+            NUMBER_OF_REPEATS = Integer.valueOf(props.getProperty(OPTION_NUMBER_OF_LOGS_PER_THREADS,
+                    Integer.toString(DEFAULT_NUMBER_OF_REPEATS)).trim());
+
+            printOptions();
+        } catch (IOException ex) {
+            System.err.println("Could not open file: " + propsFilename + ", using defaults.");
+        }
+    }
+
+    public void printOptions() {
+        System.out.println("Using the following profiler options");
+        System.out.println("============================================");
+        if (useThreadSeries) {
+            System.out.println(OPTION_USE_THREAD_SERIES + ": " + useThreadSeries);
+            System.out.println(OPTION_NUMBER_OF_TOTAL_LOGS + ": " + NUMBER_OF_WRITES);
+        } else {
+            System.out.println(OPTION_USE_THREAD_SERIES + ": " + useThreadSeries);
+            System.out.println(OPTION_NUMBER_OF_THREADS + ": " + NUMBER_OF_THREADS);
+            System.out.println(OPTION_NUMBER_OF_LOGS_PER_THREADS + ": " + NUMBER_OF_REPEATS);
+            System.out.println("============================================");
+        }
+        System.out.println();
     }
 
     /** Prints usage */
