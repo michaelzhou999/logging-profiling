@@ -1,41 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="warn" name="Log4j_v2_Profiler">
-  <appenders>
-    <File name="SYNC_FILE" fileName="log4jv2-sync-file.out" append="true">
+<Configuration status="warn" name="Log4j_v2_Profiler">
+  <Appenders>
+    <RollingFile name="SYNC_FILE" fileName="log4jv2-sync-file.out" filePattern="log4jv2-sync-file-%i.out">
       <PatternLayout>
-        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
       </PatternLayout>
-    </File>
-    <File name="ASYNC_FILE" fileName="log4jv2-async-file.out" append="true">
+      <Policies>
+        <SizeBasedTriggeringPolicy size="500 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </RollingFile>
+    <RollingFile name="ASYNC_FILE" fileName="log4jv2-async-file.out" filePattern="log4jv2-async-file-%i.out">
       <PatternLayout>
-        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
       </PatternLayout>
-    </File>
-    <RandomAccessFile name="SYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-sync-randomaccessfile.out" immediateFlush="false" append="true">
+      <Policies>
+        <SizeBasedTriggeringPolicy size="500 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </RollingFile>
+    <RollingRandomAccessFile name="SYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-sync-randomaccessfile.out" filePattern="log4jv2-sync-randomaccessfile-%i.out" immediateFlush="false">
       <PatternLayout>
-        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
       </PatternLayout>
-    </RandomAccessFile>
-    <RandomAccessFile name="ASYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-async-randomaccessfile.out" immediateFlush="false" append="true">
+      <Policies>
+        <SizeBasedTriggeringPolicy size="500 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </RollingRandomAccessFile>
+    <RollingRandomAccessFile name="ASYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-async-randomaccessfile.out" filePattern="log4jv2-async-randomaccessfile-%i.out" immediateFlush="false">
       <PatternLayout>
-        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
       </PatternLayout>
-    </RandomAccessFile>
-  </appenders>
-  <loggers>
-    <logger name="SyncFileLogger" level="debug">
-      <appender-ref ref="SYNC_FILE"/>
-    </logger>
-    <logger name="SyncRandomAccessFileLogger" level="debug">
-      <appender-ref ref="SYNC_RANDOM_ACCESS_FILE"/>
-    </logger>
-    <asyncLogger name="AsyncFileLogger" level="debug">
-      <appender-ref ref="ASYNC_FILE"/>
-    </asyncLogger>
-    <asyncLogger name="AsyncRandomAccessFileLogger" level="debug">
-        <appender-ref ref="ASYNC_RANDOM_ACCESS_FILE"/>
-    </asyncLogger>
-    <root level="debug">
-    </root>
-  </loggers>
-</configuration>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="500 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Logger name="SyncFileLogger" level="debug">
+      <AppenderRef ref="SYNC_FILE"/>
+    </Logger>
+    <Logger name="SyncRandomAccessFileLogger" level="debug">
+      <AppenderRef ref="SYNC_RANDOM_ACCESS_FILE"/>
+    </Logger>
+    <AsyncLogger name="AsyncFileLogger" level="debug">
+      <AppenderRef ref="ASYNC_FILE"/>
+    </AsyncLogger>
+    <AsyncLogger name="AsyncRandomAccessFileLogger" level="debug">
+      <AppenderRef ref="ASYNC_RANDOM_ACCESS_FILE"/>
+    </AsyncLogger>
+    <Root level="debug">
+    </Root>
+  </Loggers>
+</Configuration>
