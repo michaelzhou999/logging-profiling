@@ -2,6 +2,7 @@ package com.test.logging.logback;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,15 +27,19 @@ public class LogbackTest {
     public static void setUpBeforeClass() throws Exception {
     }
 
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        // Stopping the logger context to force flushing the log events
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        loggerContext.stop();
+    }
+
     @Before
     public void setUp() throws Exception {
     }
 
     @After
     public void tearDown() throws Exception {
-        // Stopping the logger context to force flushing the log events
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        loggerContext.stop();
     }
 
     @Test
