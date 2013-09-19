@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.test.logging.common.LoggingTest;
 import com.test.logging.common.ProfilerOptions;
 import com.test.logging.common.TestFactoryType;
+import static com.test.logging.common.Util.sleepForIOCatchup;
 
 /** Log4j v2 logger test */
 public class Log4jv2Slf4jTest {
@@ -44,32 +45,40 @@ public class Log4jv2Slf4jTest {
     }
 
     @Test
-    public void testSyncFastFileLogger() {
-        // Synchronous fast file logger
-        System.out.println("(((((((((((((   SYNC FASTFILE LOGGER   ))))))))))))))))");
-        Logger logger = LoggerFactory.getLogger("SyncFastFileLogger");
+    public void testAsyncFileLogger() {
+        // Asynchronous file logger
+        System.out.println("(((((((((((((   ASYNC FILE LOGGER   ))))))))))))))))");
+        Logger asyncLogger = LoggerFactory.getLogger("AsyncFileLogger");
         // Iterate through all unit work types and execute test scenarios
         for (TestFactoryType t : allTypes) {
-            new LoggingTest<Logger>(t.toString() + "-SyncFastFile", new TestFactory(t, logger), opts).run();
+            new LoggingTest<Logger>(t.toString() + "-AsyncFile", new TestFactory(t, asyncLogger), opts).run();
+        }
+
+        sleepForIOCatchup();
+    }
+
+    @Test
+    public void testSyncRandomAccessFileLogger() {
+        // Synchronous random access file logger
+        System.out.println("(((((((((((((   SYNC RANDOMACCESSFILE LOGGER   ))))))))))))))))");
+        Logger logger = LoggerFactory.getLogger("SyncRandomAccessFileLogger");
+        // Iterate through all unit work types and execute test scenarios
+        for (TestFactoryType t : allTypes) {
+            new LoggingTest<Logger>(t.toString() + "-SyncRandomAccessFile", new TestFactory(t, logger), opts).run();
         }
     }
 
     @Test
-    public void testAsyncFastFileLogger() {
-        // Asynchronous file logger
-        System.out.println("(((((((((((((   ASYNC FASTFILE LOGGER   ))))))))))))))))");
-        Logger asyncLogger = LoggerFactory.getLogger("AsyncFileLogger");
+    public void testAsyncRandomAccessFileLogger() {
+        // Asynchronous random access file logger
+        System.out.println("(((((((((((((   ASYNC RANDOMACCESSFILE LOGGER   ))))))))))))))))");
+        Logger asyncLogger = LoggerFactory.getLogger("AsyncRandomAccessFileLogger");
         // Iterate through all unit work types and execute test scenarios
         for (TestFactoryType t : allTypes) {
-            new LoggingTest<Logger>(t.toString() + "-AsyncFastFile", new TestFactory(t, asyncLogger), opts).run();
+            new LoggingTest<Logger>(t.toString() + "-AsyncRandomAccessFile", new TestFactory(t, asyncLogger), opts).run();
         }
-        // Wait for 20 seconds for I/O to catch up and closing of async appenders
-        System.out.println("Waiting for 20 seconds for I/O to catch up and proper closing of async appenders.");
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException ie) {
-            System.err.println("Interrupted while waiting for I/O to catch up.");
-        }
+
+        sleepForIOCatchup();
     }
 
 }

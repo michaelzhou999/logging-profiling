@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="warn" name="Log4j_v2_Profiler">
   <appenders>
-    <File name="FILE" fileName="log4jv2-file.out" append="true">
+    <File name="SYNC_FILE" fileName="log4jv2-sync-file.out" append="true">
       <PatternLayout>
         <pattern>%d %p %c{1.} [%t] %m%n</pattern>
       </PatternLayout>
     </File>
-    <FastFile name="FASTFILE" fileName="log4jv2-fastfile.out" immediateFlush="false" append="true">
+    <File name="ASYNC_FILE" fileName="log4jv2-async-file.out" append="true">
       <PatternLayout>
         <pattern>%d %p %c{1.} [%t] %m%n</pattern>
       </PatternLayout>
-    </FastFile>
-    <FastFile name="ASYNCFASTFILE" fileName="log4jv2-async.out" immediateFlush="false" append="true">
+    </File>
+    <RandomAccessFile name="SYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-sync-randomaccessfile.out" immediateFlush="false" append="true">
       <PatternLayout>
         <pattern>%d %p %c{1.} [%t] %m%n</pattern>
       </PatternLayout>
-    </FastFile>
+    </RandomAccessFile>
+    <RandomAccessFile name="ASYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-async-randomaccessfile.out" immediateFlush="false" append="true">
+      <PatternLayout>
+        <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+      </PatternLayout>
+    </RandomAccessFile>
   </appenders>
   <loggers>
     <logger name="SyncFileLogger" level="debug">
-      <appender-ref ref="FILE"/>
+      <appender-ref ref="SYNC_FILE"/>
     </logger>
-    <logger name="SyncFastFileLogger" level="debug">
-      <appender-ref ref="FASTFILE"/>
+    <logger name="SyncRandomAccessFileLogger" level="debug">
+      <appender-ref ref="SYNC_RANDOM_ACCESS_FILE"/>
     </logger>
-    <asyncLogger name="AsyncFastFileLogger" level="debug">
-      <appender-ref ref="ASYNCFASTFILE"/>
+    <asyncLogger name="AsyncFileLogger" level="debug">
+      <appender-ref ref="ASYNC_FILE"/>
+    </asyncLogger>
+    <asyncLogger name="AsyncRandomAccessFileLogger" level="debug">
+        <appender-ref ref="ASYNC_RANDOM_ACCESS_FILE"/>
     </asyncLogger>
     <root level="debug">
     </root>
