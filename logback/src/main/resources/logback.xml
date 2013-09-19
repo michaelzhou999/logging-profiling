@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>logback-file.out</file>
-    <append>true</append>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logback-sync-file.out</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>logback-sync-file-%i.out</fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>9</maxIndex>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>500MB</maxFileSize>
+    </triggeringPolicy>
     <encoder>
       <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
     </encoder>
   </appender>
-  <appender name="ASYNCFILE" class="ch.qos.logback.core.FileAppender">
-    <file>logback-async.out</file>
-    <append>true</append>
+  <appender name="ASYNCFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logback-async-file.out</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>logback-async-file-%i.out</fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>9</maxIndex>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>500MB</maxFileSize>
+    </triggeringPolicy>
     <encoder>
       <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
     </encoder>
