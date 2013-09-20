@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ~/logging-profiling
-mvn clean
+mvn clean install -DskipTests
 
 cd ~/logging-profiling/log4jv1-native
 mvn install
@@ -9,8 +9,8 @@ echo ""
 echo ""
 echo "=============================="
 echo " number of lines in log files"
-wc -l *.out
-rm *.out
+wc -l *.out*
+rm *.out*
 echo "=============================="
 echo ""
 echo ""
@@ -21,8 +21,8 @@ echo ""
 echo ""
 echo "=============================="
 echo "number of lines in log files"
-wc -l *.out
-rm *.out
+wc -l *.out*
+rm *.out*
 echo "=============================="
 echo ""
 echo ""
@@ -33,8 +33,8 @@ echo ""
 echo ""
 echo "=============================="
 echo "number of lines in log files"
-wc -l *.out
-rm *.out
+wc -l *.out*
+rm *.out*
 echo "=============================="
 echo ""
 echo ""
@@ -45,8 +45,8 @@ echo ""
 echo ""
 echo "=============================="
 echo "number of lines in log files"
-wc -l *.out
-rm *.out
+wc -l *.out*
+rm *.out*
 echo "=============================="
 echo ""
 echo ""
@@ -57,8 +57,8 @@ echo ""
 echo ""
 echo "=============================="
 echo "number of lines in log files"
-wc -l *.out
-rm *.out
+wc -l *.out*
+rm *.out*
 echo "=============================="
 echo ""
 echo ""
