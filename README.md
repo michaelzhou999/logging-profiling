@@ -57,85 +57,33 @@ Dependencies
 
 The projects require JDK v1.6+ and Maven 2.0.6+.
 
-In addition, they are dependent upon the following Maven plugins for build:
-- Exec (http://mojo.codehaus.org/exec-maven-plugin/)
+In addition, they are dependent upon the following Maven plugins for build and run:
 - Enforcer (http://maven.apache.org/enforcer/maven-enforcer-plugin/)
-
-At compile and runtime, they depend on:
-- Apache Commons CLI (http://commons.apache.org/proper/commons-cli/)
-
-See each individual project's pom.xml file for its corresponding logging
-framework's version.
+- Compiler (http://maven.apache.org/plugins/maven-compiler-plugin/)
+- Surefire (http://maven.apache.org/surefire/maven-surefire-plugin/)
 
 Build
 -----
 
 At parent directory level, run
 
-    mvn clean install
+    mvn clean compile
 
 
 Run
 ---
 
-To run profiling test against each individual logging framework, e.g., log4jv2-native,
-
-- Project "log4jv1-native"
+To run profiling test against each individual logging framework, e.g.,
+log4jv2-native,
 
     cd log4jv1-native
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv1.Profiler"
+    mvn test
 
-- Project "log4jv1-slf4j"
+A file named "test.properties" unde each project's test/resources directory
+will be used to specify profiling options. See comments in the file.
 
-    cd log4jv1-slf4j
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv1.Profiler"
+Instead of specifying threads and repeats, the test can also be run by
+specifying a single parameter: the number of writes for each particular test.
+A preset series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50.
 
-- Project "log4jv2-native"
-
-    cd log4jv2-native
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv2.Profiler"
-
-- Project "log4jv2-slf4j"
-
-    cd log4jv2-slf4j
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.log4jv2.Profiler"
-
-- Project "logback"
-
-    cd logback
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler"
-
-To change the number of threads and repeats, add additional arguments to the command line. For example
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -t <number_of_threads> -r <number_of_repeats>"
-
-or in the long format
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --thread <number_of_threads> --repeat <number_of_repeats>"
-
-Instead of specifying threads and repeats, the test can also be run by specifying
-a single parameter: the number of writes for each particular test. A preset
-series of numbers of threads will then be chosen, 1, 2, 5, 10, 20, 50, ... , 100.
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -w <number_of_writes>"
-
-or in the long format
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --write <number_of_writes>"
-
-To repeat the test over and over again, use "run" option.
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -n <number_of_runs>"
-
-or in the long format
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --run <number_of_runs>"
-
-To get help,
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler -h"
-
-or in the long format
-
-    mvn exec:exec -Dexec.args="-cp %classpath com.test.logging.logback.Profiler --help"
-
+Results will be written to results.csv file after each run.
