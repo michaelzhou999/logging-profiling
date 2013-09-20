@@ -23,7 +23,7 @@ do
         echo "Working in directory `pwd`"
 
         # run the test
-        mvn install
+        mvn test
 
         # sanity check and clean up log files
         echo ""
