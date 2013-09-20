@@ -8,7 +8,7 @@
       <Policies>
         <SizeBasedTriggeringPolicy size="500 MB"/>
       </Policies>
-      <DefaultRolloverStrategy max="10"/>
+      <DefaultRolloverStrategy max="9"/>
     </RollingFile>
     <RollingFile name="ASYNC_FILE" fileName="log4jv2-async-file.out" filePattern="log4jv2-async-file-%i.out">
       <PatternLayout>
@@ -17,7 +17,7 @@
       <Policies>
         <SizeBasedTriggeringPolicy size="500 MB"/>
       </Policies>
-      <DefaultRolloverStrategy max="10"/>
+      <DefaultRolloverStrategy max="9"/>
     </RollingFile>
     <RollingRandomAccessFile name="SYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-sync-randomaccessfile.out" filePattern="log4jv2-sync-randomaccessfile-%i.out" immediateFlush="false">
       <PatternLayout>
@@ -26,7 +26,7 @@
       <Policies>
         <SizeBasedTriggeringPolicy size="500 MB"/>
       </Policies>
-      <DefaultRolloverStrategy max="10"/>
+      <DefaultRolloverStrategy max="9"/>
     </RollingRandomAccessFile>
     <RollingRandomAccessFile name="ASYNC_RANDOM_ACCESS_FILE" fileName="log4jv2-async-randomaccessfile.out" filePattern="log4jv2-async-randomaccessfile-%i.out" immediateFlush="false">
       <PatternLayout>
@@ -35,7 +35,7 @@
       <Policies>
         <SizeBasedTriggeringPolicy size="500 MB"/>
       </Policies>
-      <DefaultRolloverStrategy max="10"/>
+      <DefaultRolloverStrategy max="9"/>
     </RollingRandomAccessFile>
   </Appenders>
   <Loggers>
