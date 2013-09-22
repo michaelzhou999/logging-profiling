@@ -8,8 +8,20 @@ echo "Creating result-storing directory: $RESULTS_DIR"
 mkdir -p $RESULTS_DIR
 rm -rf $RESULTS_DIR/*
 
+runs="5"
+if [ $# -gt 0 ]
+then
+    if [[ $1 =~ ^[1-9][0-9]*$ ]]
+    then
+        echo "Intended number of runs: $1"
+        runs=$1
+    else
+        echo "Invalid integer format: $1"
+    fi
+fi
+
 run="1"
-while [ $run -lt 6 ]
+while [ $run -le $runs ]
 do
     echo "----------------------"
     echo "   Test Run #$run"
