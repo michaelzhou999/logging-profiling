@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECTS=$(find . -maxdepth 1 -type d -name log\* -printf '%f\n' | sort)
+PROJECTS=$(find . -maxdepth 1 -type d -name \*log\* -printf '%f\n' | sort)
 CURR_DIR=`pwd`
 
 RESULTS_DIR="$CURR_DIR/results"
