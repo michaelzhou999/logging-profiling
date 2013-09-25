@@ -49,17 +49,4 @@ public class JulTest {
         }
     }
 
-    //@Test
-    public void testAsyncFileLogger() {
-        // Asynchronous file logger
-        System.out.println("(((((((((((((   ASYNC FILE LOGGER   ))))))))))))))))");
-        Logger asyncLogger = Logger.getLogger("AsyncFileLogger");
-        // Iterate through all unit work types and execute test scenarios
-        for (TestFactoryType t : allTypes) {
-            new LoggingTest<Logger>(t.toString() + "-Async", new TestFactory(t, asyncLogger), opts).run();
-        }
-
-        sleepForIOCatchup();
-    }
-
 }
