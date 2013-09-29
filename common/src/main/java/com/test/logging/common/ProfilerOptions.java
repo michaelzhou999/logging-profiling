@@ -22,6 +22,7 @@ public class ProfilerOptions {
 
     /** Names of options, using CamelCase naming convention. */
     private static final String OPTION_USE_THREAD_SERIES = "UseThreadSeries";
+    private static final String OPTION_NUMBER_OF_WARMUP_WRITES = "NumberOfWarmupWrites";
     private static final String OPTION_NUMBER_OF_TOTAL_LOGS = "NumberOfTotalLogs";
     private static final String OPTION_NUMBER_OF_THREADS = "NumberOfThreads";
     private static final String OPTION_NUMBER_OF_LOGS_PER_THREADS = "NumberOfLogsPerThread";
@@ -71,8 +72,10 @@ public class ProfilerOptions {
     /** Indication of using thread series */
     protected boolean useThreadSeries = true;
 
-    /** Number of writes during warm-up. This could be set by command line. Fixed for now. */
-    protected int nWarmUpWrites = 5000 * 1000;
+    /** Default number of writes during warm-up */
+    protected static final int DEFAULT_NUMBER_OF_WARMUP_WRITES = 5000 * 100; // 500K
+    /** Number of writes during warm-up. */
+    protected int NUMBER_OF_WARMUP_WRITES = DEFAULT_NUMBER_OF_WARMUP_WRITES;
     /**
      * Wait, in millis, after warm-up. This is for I/O thread to catch up and buffers to drain in case of asynchronous
      * logging.
@@ -148,6 +151,8 @@ public class ProfilerOptions {
                     Integer.toString(DEFAULT_NUMBER_OF_THREADS)).trim());
             NUMBER_OF_REPEATS = Integer.valueOf(props.getProperty(OPTION_NUMBER_OF_LOGS_PER_THREADS,
                     Integer.toString(DEFAULT_NUMBER_OF_REPEATS)).trim());
+            NUMBER_OF_WARMUP_WRITES = Integer.valueOf(props.getProperty(OPTION_NUMBER_OF_WARMUP_WRITES,
+                    Integer.toString(DEFAULT_NUMBER_OF_WARMUP_WRITES)).trim());
 
             printOptions();
         } catch (IOException ex) {
@@ -158,6 +163,7 @@ public class ProfilerOptions {
     public void printOptions() {
         System.out.println("Using the following profiler options");
         System.out.println("============================================");
+        System.out.println(OPTION_NUMBER_OF_WARMUP_WRITES + ": " + NUMBER_OF_WARMUP_WRITES);
         if (useThreadSeries) {
             System.out.println(OPTION_USE_THREAD_SERIES + ": " + useThreadSeries);
             System.out.println(OPTION_NUMBER_OF_TOTAL_LOGS + ": " + NUMBER_OF_WRITES);
@@ -176,6 +182,9 @@ public class ProfilerOptions {
         formatter.printHelp(appName, options);
     }
 
+    /**
+     * This is not used for now as the test is run as JUnit.
+     */
     public void buildCliOptions() {
         // Build command line options
 
@@ -219,6 +228,7 @@ public class ProfilerOptions {
 
     /**
      * Parse CLI options. If invalid options are seen, print out usage, use default settings, and keep executing.
+     * This is not used for now as the test is run as JUnit.
      * 
      * @param args Command line argument list
      * 
@@ -348,7 +358,7 @@ public class ProfilerOptions {
 
     /** Returns the number of writes during warm-up */
     public int getNumberOfWarmupWrites() {
-        return nWarmUpWrites;
+        return NUMBER_OF_WARMUP_WRITES;
     }
 
     /** Returns the time in millis to wait after warm-up */
