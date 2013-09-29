@@ -3,22 +3,30 @@
 PROJECTS=$(find . -maxdepth 1 -type d -name \*log\* -printf '%f\n' | sort)
 CURR_DIR=`pwd`
 
-RESULTS_DIR="$CURR_DIR/results"
-echo "Creating result-storing directory: $RESULTS_DIR"
-mkdir -p $RESULTS_DIR
-rm -rf $RESULTS_DIR/*
-
-runs="5"
+runs="2"
 if [ $# -gt 0 ]
 then
+    if [[ $1 =~ ^-h*$ || $1 =~ ^-help*$ ]]
+    then
+        echo ""
+        echo "Usage: ./runtest.sh [number of test runs]"
+        echo ""
+        exit
+    fi
+
     if [[ $1 =~ ^[1-9][0-9]*$ ]]
     then
         echo "Intended number of runs: $1"
         runs=$1
     else
-        echo "Invalid integer format: $1"
+        echo "Invalid integer format: $1. Using default number of runs: 2."
     fi
 fi
+
+RESULTS_DIR="$CURR_DIR/results"
+echo "Creating result-storing directory: $RESULTS_DIR"
+mkdir -p $RESULTS_DIR
+rm -rf $RESULTS_DIR/*
 
 run="1"
 while [ $run -le $runs ]
