@@ -18,7 +18,7 @@ Permutations
 The permutations of testing include these dimensions:
 - number of concurrent threads
 - number of repeating logs within a thread
-- different ways of formatting log messages
+- different ways of formatting log messages ('+' style, String.format() style, or SLF4J's {} style)
 - choice of logging frameworks
 - access APIs, e.g., SLF4J facade vs native API
 
@@ -75,8 +75,10 @@ Run
 ---
 
 By default, each test run will start with warming up JVM by writing 500K log messages,
-wait for 10 seconds, and measure the time spent on writing another 500K messages as
-the profiling result.
+wait for 10 seconds, and measure the time spent on writing another 500K messages of
+~200 bytes long as the profiling result. Rolling file appenders (10 files * 500MB per
+file) are the default configuration, so roughly 22 GB of free disk space is needed to
+run the test.
 
 To run profiling test against each individual logging framework, e.g.,
 log4jv2-native,
@@ -93,6 +95,14 @@ A pre-set series of thread counts will then be chosen, 1, 2, 5, 10, 20, 50.
 
 Results will be written to results.csv file after each run.
 
+A Bash script (runtest.sh) was also available to run tests across all projects in
+one shot. The default number of runs is 5 if nothing is passed in command line.
+
+    ./runtest.sh [optional number of runs]
+
+Results obtained this way will be automatically renamed and stored into "results"
+directory.
+
 Results
 -------
 
@@ -100,7 +110,7 @@ Under "testresults" directory, there is a spreadsheet that serves as the templat
 for recording and comparing test results. It also recorded the actual results
 on virtual machine running Ubuntu 12.04LTS (64-bit, 8 cores, no hyper-threading).
 
-To use it, copy/paste the time column from results.csv (in previous step) into
+To use it, copy/paste the "Time" column from results.csv (in previous step) into
 the corresponding worksheet (look for <project-name>-raw-data worksheets toward
 the end of the workbook), the average time will be automatically calculated and
 populated to other worksheets (named <project-name>-results). A grand summary of
